@@ -1,0 +1,3558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | OPR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/wvDQfnv5/image-removebg-preview-(3).png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================
+       GLOBAL RESET & CORE STYLES (DASHBOARD ASLI - TIDAK DIUBAH)
+       ========================================================= */
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-card: rgba(18, 24, 38, 0.75);
+      --bg-card-border: rgba(255, 255, 255, 0.08);
+      --sidebar-bg: #0d1322;
+      --sidebar-border: rgba(255, 255, 255, 0.06);
+
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.35);
+
+      --accent-gold: #f59e0b;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dark: #64748b;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+    }
+
+    /* =========================================================
+       LAYOUT STRUCTURE
+       ========================================================= */
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    /* =========================================================
+       PREMIUM SIDEBAR STYLES
+       ========================================================= */
+    .sidebar {
+      width: 270px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--sidebar-border);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      backdrop-filter: blur(20px);
+      z-index: 100;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 12px 24px 12px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+
+    .brand-text {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Logo brand sidebar: menggantikan tulisan DASHBOARD tanpa mengubah fungsi menu. */
+    .sidebar-brand-logo {
+      display: block;
+      width: 178px;
+      max-width: 100%;
+      max-height: 58px;
+      height: auto;
+      margin: 0 auto;
+      object-fit: contain;
+      object-position: center;
+      filter: drop-shadow(0 0 10px rgba(33, 150, 243, 0.22));
+    }
+
+    .sidebar-menu-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--text-dark);
+      padding: 0 12px 8px 12px;
+      text-transform: uppercase;
+    }
+
+    .side-menu {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 13px 16px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.2;
+      transition: var(--transition);
+    }
+
+    .side-menu:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .side-menu:hover .nav-icon {
+      transform: translateX(3px);
+      stroke: var(--primary);
+    }
+
+    .side-menu.active {
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: #ffffff;
+      box-shadow: 0 4px 20px var(--primary-glow);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .side-menu.active .nav-icon {
+      stroke: #ffffff;
+    }
+
+    /* =========================================================
+       MAIN CONTENT AREA
+       ========================================================= */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .app {
+      padding: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Top Header */
+    .top-header {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px 32px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .header-info h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .header-info p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      line-height: 1.5;
+    }
+
+    .logout-btn {
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--accent-red);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .logout-btn:hover {
+      background: var(--accent-red);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Withdraw Flop embed - hanya mengatur wadah, tidak mengubah kode asli di dalamnya. */
+    .withdraw-flop-embed {
+      width: 100%;
+      min-height: 980px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .withdraw-flop-embed iframe {
+      display: block;
+      width: 100%;
+      height: 980px;
+      min-height: 980px;
+      border: 0;
+      margin: 0;
+      padding: 0;
+      border-radius: 18px;
+      background: transparent;
+    }
+
+    @media (max-width: 900px) {
+      .withdraw-flop-embed,
+      .withdraw-flop-embed iframe {
+        min-height: 1040px;
+        height: 1040px;
+      }
+    }
+
+    /* Page Visibility */
+    .app-page {
+      display: none;
+    }
+
+    .app-page.active {
+      display: block;
+    }
+
+    /* Tabs Component */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .tab-button {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      color: var(--text-muted);
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .tab-button.active, .tab-button:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+
+    /* Tab content visibility (baru ditambahkan agar switch antar tab berfungsi) */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards & Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      backdrop-filter: blur(12px);
+    }
+
+    .card-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .card-heading h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .badge {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* Form Controls */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .form-group input, .form-group select, .mahjong-textarea {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus, .form-group select:focus, .mahjong-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-reset {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--bg-card-border);
+    }
+
+    .btn-reset:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    /* Result Box */
+    .total-box {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .total-box span {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .total-box strong {
+      font-size: 1.8rem;
+      color: var(--accent-gold);
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--bg-card-border);
+      font-size: 0.92rem;
+    }
+
+    .result-row strong.gold {
+      color: var(--accent-gold);
+    }
+
+    .mahjong-textarea {
+      min-height: 140px;
+      resize: vertical;
+      margin-bottom: 20px;
+    }
+
+    /* =========================================================
+       KALKULATOR TOGEL (DISATUKAN, DI-SCOPE DI DALAM .togel-panel
+       AGAR TIDAK MENIMPA STYLE GLOBAL DASHBOARD)
+       ========================================================= */
+    .togel-panel {
+      --bg-deep: #141B2E;
+      --bg-panel: #1B2338;
+      --bg-panel-soft: #232C45;
+      --accent: #7EA6D8;
+      --accent-dim: rgba(126,166,216,0.16);
+      --red: #D98C82;
+      --green: #7FC2A3;
+      --text: #E7EAF2;
+      --text-dim: #9AA4BD;
+      --border: rgba(126,166,216,0.16);
+      --radius-card: 16px;
+
+      background:
+        radial-gradient(circle at 15% 0%, rgba(126,166,216,0.08), transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(127,194,163,0.06), transparent 45%),
+        var(--bg-deep);
+      color: var(--text);
+      font-family: "Inter", Arial, sans-serif;
+      padding: 32px 20px 48px;
+      border-radius: var(--radius-lg);
+    }
+    .togel-panel h1, .togel-panel h2 {
+      font-family: "Space Grotesk", "Inter", Arial, sans-serif;
+    }
+    .togel-panel :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .togel-panel * { animation: none !important; transition: none !important; }
+    }
+    .togel-wrapper {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .togel-intro {
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto 40px;
+    }
+    .togel-intro h1 {
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: var(--text);
+    }
+    .togel-intro p {
+      margin: 14px 0 0;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      font-style: italic;
+    }
+    .togel-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .togel-tab {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-panel);
+      color: var(--text-dim);
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .togel-tab:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+    .togel-tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #16233A;
+    }
+    .togel-subcategory-wrap {
+      max-width: 760px;
+      margin: 0 auto 30px;
+      padding: 18px 20px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .togel-subcategory-title {
+      text-align: center;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .togel-subtabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .togel-subtab {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: var(--bg-panel-soft);
+      color: var(--text-dim);
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .togel-subtab:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+    .togel-subtab.active {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .togel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .togel-card {
+      background: var(--bg-panel);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-card);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .togel-card-title {
+      font-family: "Space Grotesk", Arial, sans-serif;
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: var(--text);
+    }
+    .togel-card-rule {
+      font-size: 12px;
+      color: var(--text-dim);
+      padding-bottom: 8px;
+      border-bottom: 1px dashed rgba(255,255,255,0.10);
+    }
+    .togel-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font-size: 14px;
+      font-family: "Inter", Arial, sans-serif;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .togel-input::placeholder {
+      color: rgba(155,160,199,0.6);
+    }
+    .togel-input:focus {
+      border-color: var(--accent);
+    }
+    .togel-card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .togel-hit, .togel-reset {
+      flex: 1;
+      padding: 9px 10px;
+      border: none;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.15s ease, transform 0.1s ease;
+    }
+    .togel-hit {
+      background: var(--accent);
+      color: #16233A;
+    }
+    .togel-reset {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-dim);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    .togel-hit:hover, .togel-reset:hover { opacity: 0.88; }
+    .togel-hit:active, .togel-reset:active { transform: scale(0.97); }
+
+    .togel-result {
+      margin-top: 4px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      opacity: 0.45;
+      transition: opacity 0.2s ease;
+    }
+    .togel-result.show {
+      opacity: 1;
+    }
+    .togel-result strong {
+      float: right;
+      color: var(--text);
+      font-family: "Space Grotesk", Arial, sans-serif;
+      font-weight: 600;
+    }
+    .togel-result div {
+      display: flex;
+      justify-content: space-between;
+    }
+    .togel-bayar { color: var(--red) !important; }
+    .togel-menang { color: var(--green) !important; }
+    .togel-total { color: var(--accent) !important; }
+
+    /* Peningkatan keterbacaan teks KALKULATOR TOGEL — hanya visual, tanpa mengubah fungsi */
+    .togel-panel {
+      --text: #F4F7FF;
+      --text-dim: #C3CCDF;
+    }
+    .togel-intro h1 {
+      color: #F8FAFF;
+      font-weight: 800;
+      text-shadow: 0 1px 8px rgba(255,255,255,0.06);
+    }
+    .togel-intro p {
+      color: #BFC9DE;
+      font-weight: 500;
+    }
+    .togel-tab {
+      color: #D6DEEE;
+      font-weight: 650;
+    }
+    .togel-tab.active {
+      color: #10213A;
+      font-weight: 800;
+    }
+    .togel-subcategory-title {
+      color: #A9C8F5;
+      font-weight: 700;
+    }
+    .togel-subtab {
+      color: #D0D8E8;
+      font-weight: 600;
+    }
+    .togel-subtab.active {
+      color: #BFD8FA;
+      font-weight: 700;
+    }
+    .togel-card-title {
+      color: #F4F7FF;
+      font-size: 14.5px;
+      font-weight: 800;
+    }
+    .togel-card-rule {
+      color: #C6D0E2;
+      font-size: 12.5px;
+      font-weight: 500;
+      line-height: 1.55;
+    }
+    .togel-input {
+      color: #F3F7FF;
+      font-weight: 500;
+    }
+    .togel-input::placeholder {
+      color: #AAB5CA;
+      opacity: 1;
+    }
+    .togel-hit, .togel-reset {
+      font-weight: 800;
+    }
+    .togel-reset {
+      color: #D8E0EE;
+    }
+    .togel-result {
+      color: #C4CDDF;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .togel-result strong {
+      color: #F5F8FF;
+      font-weight: 800;
+    }
+    .togel-bayar { color: #FF9E97 !important; }
+    .togel-menang { color: #8DE0B5 !important; }
+    .togel-total { color: #A9C9FA !important; }
+
+    .togel-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-dim);
+      font-size: 14px;
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 14px;
+    }
+    @media (max-width: 640px) {
+      .togel-panel { padding: 24px 14px 36px; }
+      .togel-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 420px) {
+      .togel-grid { grid-template-columns: 1fr; }
+    }
+
+    /* =========================================================
+       GENERATOR MAHJONG WAYS (DISATUKAN, DI-SCOPE DI DALAM
+       .mahjonggen-panel AGAR TIDAK MENIMPA STYLE GLOBAL DASHBOARD)
+       ========================================================= */
+    .mahjonggen-panel {
+      --mg-primary: #1D1B4B;
+      --mg-primary-light: #2768B5;
+      --mg-text: #3E3344;
+      --mg-background: #F1F4F3;
+      --mg-white: #FFFFFF;
+      --mg-border: #D3D9DC;
+      --mg-cream: #FCF0DA;
+      --mg-blue-light: #83C1F2;
+      --mg-glass-white: rgba(255, 255, 255, 0.72);
+      --mg-glass-blue: rgba(131, 193, 242, 0.18);
+      --mg-glass-primary: rgba(29, 27, 75, 0.08);
+      --mg-glass-border: rgba(255, 255, 255, 0.65);
+      --mg-shadow-soft: 0 20px 50px rgba(29, 27, 75, 0.12);
+      --mg-success: #15966b;
+      --mg-danger: #e53935;
+      --mg-gold: #c99a18;
+
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      padding: 40px 20px;
+      font-family: "Inter", Arial, sans-serif;
+      color: var(--mg-text);
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(131, 193, 242, 0.45), transparent 30%),
+        radial-gradient(circle at 90% 15%, rgba(39, 104, 181, 0.22), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(29, 27, 75, 0.14), transparent 40%),
+        linear-gradient(135deg, #F1F4F3 0%, #FFFFFF 45%, #F1F4F3 100%);
+    }
+
+    .mahjonggen-panel::before {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      left: -180px;
+      top: 30%;
+      border-radius: 50%;
+      background: rgba(131, 193, 242, 0.18);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .mahjonggen-panel::after {
+      content: "";
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      right: -200px;
+      bottom: 0;
+      border-radius: 50%;
+      background: rgba(39, 104, 181, 0.12);
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .mahjonggen-panel .app {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mahjonggen-panel .main-title {
+      margin: 0 0 12px;
+      text-align: center;
+      font-family: "Inter", Arial, sans-serif;
+      font-size: clamp(1.7rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--mg-primary);
+      text-shadow: 0 4px 15px rgba(29, 27, 75, 0.15);
+    }
+
+    .mahjonggen-panel .main-title span {
+      color: var(--mg-primary-light);
+    }
+
+    .mahjonggen-panel .subtitle {
+      margin-top: 0;
+      margin-bottom: 30px;
+      text-align: center;
+      color: rgba(62, 51, 68, 0.65);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .mahjonggen-panel .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      position: relative;
+      padding: clamp(20px, 5vw, 40px);
+      background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,255,255,0.48));
+      border: 1px solid var(--mg-glass-border);
+      border-radius: 24px;
+      box-shadow: 0 25px 70px rgba(29, 27, 75, 0.14), inset 0 1px 0 rgba(255,255,255,0.9);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .mahjonggen-panel .container::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
+      pointer-events: none;
+    }
+
+    .mahjonggen-panel .container::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: 15%;
+      right: 15%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--mg-primary), var(--mg-blue-light), var(--mg-primary-light));
+      box-shadow: 0 0 15px rgba(39,104,181,0.35), 0 0 30px rgba(131,193,242,0.25);
+      border-radius: 20px;
+    }
+
+    .mahjonggen-panel .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      color: var(--mg-primary);
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .mahjonggen-panel .section-title span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: rgba(131,193,242,0.20);
+      border: 1px solid rgba(131,193,242,0.30);
+    }
+
+    .mahjonggen-panel textarea {
+      width: 100%;
+      height: 160px;
+      min-height: 140px;
+      resize: vertical;
+      margin-bottom: 25px;
+      padding: 16px;
+      outline: none;
+      color: var(--mg-text);
+      background: rgba(255,255,255,0.58);
+      border: 1px solid rgba(211,217,220,0.9);
+      border-radius: 14px;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: inset 0 2px 8px rgba(29,27,75,0.04), 0 5px 20px rgba(29,27,75,0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .mahjonggen-panel textarea:focus {
+      border-color: var(--mg-primary-light);
+      background: rgba(255,255,255,0.78);
+      box-shadow: 0 0 0 3px rgba(39,104,181,0.10), 0 10px 25px rgba(29,27,75,0.07);
+    }
+
+    .mahjonggen-panel textarea::placeholder {
+      color: rgba(62,51,68,0.45);
+    }
+
+    .mahjonggen-panel .btn-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .mahjonggen-panel button {
+      padding: 13px 25px;
+      border: none;
+      border-radius: 11px;
+      cursor: pointer;
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+    }
+
+    .mahjonggen-panel button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.45) 50%,
+        transparent 100%
+      );
+      transform: skewX(-25deg);
+      animation: mgShineSlow 4.5s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes mgShineSlow {
+      0% { left: -150%; }
+      50%, 100% { left: 150%; }
+    }
+
+    .mahjonggen-panel button:hover {
+      opacity: 0.94;
+      transform: translateY(-1px);
+    }
+
+    .mahjonggen-panel button:active {
+      transform: scale(0.97);
+    }
+
+    .mahjonggen-panel .btn-main {
+      color: var(--mg-white);
+      background: linear-gradient(135deg, var(--mg-primary), var(--mg-primary-light));
+      box-shadow: 0 8px 20px rgba(29,27,75,0.20);
+    }
+
+    .mahjonggen-panel .btn-main:hover {
+      box-shadow: 0 12px 28px rgba(39,104,181,0.25);
+    }
+
+    .mahjonggen-panel .btn-clear {
+      color: var(--mg-primary);
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid var(--mg-border);
+      box-shadow: 0 5px 15px rgba(29, 27, 75, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .mahjonggen-panel .btn-clear:hover {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: var(--mg-primary-light);
+    }
+
+    .mahjonggen-panel .btn-special {
+      color: #4b3900;
+      background: linear-gradient(135deg, #FCF0DA, #e8c76a);
+      border: 1px solid rgba(201,154,24,0.35);
+      box-shadow: 0 8px 20px rgba(201,154,24,0.18);
+    }
+
+    .mahjonggen-panel .btn-main::after, .mahjonggen-panel .btn-special::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      opacity: 0;
+      animation: mgPulseGlowSlow 3s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes mgPulseGlowSlow {
+      0% { opacity: 0.2; }
+      100% { opacity: 0.8; }
+    }
+
+    .mahjonggen-panel .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      margin-bottom: 15px;
+      border: 1px solid rgba(211,217,220,0.85);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.36);
+      box-shadow: 0 10px 25px rgba(29,27,75,0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .mahjonggen-panel table {
+      width: 100%;
+      min-width: 850px;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.16);
+    }
+
+    .mahjonggen-panel th {
+      padding: 14px 12px;
+      color: var(--mg-white);
+      background: linear-gradient(135deg, var(--mg-primary), var(--mg-primary-light));
+      border-bottom: 2px solid rgba(255,255,255,0.35);
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .mahjonggen-panel td {
+      padding: 14px 12px;
+      text-align: center;
+      color: var(--mg-text);
+      border-bottom: 1px solid rgba(211,217,220,0.65);
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .mahjonggen-panel tbody tr { transition: background 0.2s ease; }
+    .mahjonggen-panel tbody tr:hover { background: rgba(131,193,242,0.12); }
+    .mahjonggen-panel tbody tr:last-child td { border-bottom: none; }
+
+    .mahjonggen-panel #multiplierInfo {
+      min-height: 30px;
+      margin: 15px 0;
+      text-align: center;
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .mahjonggen-panel #specialSection {
+      display: none;
+      margin-top: 35px;
+      padding: 20px;
+      border: 1px solid rgba(201,154,24,0.45);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(252,240,218,0.55), rgba(255,255,255,0.35));
+      box-shadow: 0 15px 40px rgba(201,154,24,0.10);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      animation: mgPulseGold 1.8s infinite alternate;
+    }
+
+    @keyframes mgPulseGold {
+      from { box-shadow: 0 10px 30px rgba(201,154,24,0.08); }
+      to { box-shadow: 0 15px 40px rgba(201,154,24,0.20); }
+    }
+
+    .mahjonggen-panel .img-table-header th {
+      background: linear-gradient(135deg, var(--mg-primary), var(--mg-primary-light)) !important;
+      color: #fff !important;
+      border-bottom-color: var(--mg-primary-light);
+      font-weight: 800;
+    }
+
+    #toast-container {
+      position: fixed;
+      top: 30px;
+      right: -450px;
+      z-index: 99999;
+      width: min(390px, calc(100vw - 30px));
+      min-width: 300px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--mg-text, #3E3344);
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-left: 5px solid var(--mg-success, #15966b);
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(29,27,75,0.18);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: right 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    #toast-container.active { right: 30px; }
+
+    .led-dot {
+      width: 12px;
+      height: 12px;
+      flex: 0 0 12px;
+      background: var(--mg-success, #15966b);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(21,150,107,0.45);
+      animation: mgBlink 0.8s infinite;
+    }
+
+    @keyframes mgBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    #warning-toast {
+      position: fixed;
+      top: 110px;
+      right: -450px;
+      z-index: 99999;
+      width: min(390px, calc(100vw - 30px));
+      min-width: 300px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--mg-text, #3E3344);
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-left: 5px solid var(--mg-danger, #e53935);
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(29,27,75,0.18);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: right 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    #warning-toast.active { right: 30px; }
+
+    .led-dot-danger {
+      width: 12px;
+      height: 12px;
+      flex: 0 0 12px;
+      background: var(--mg-danger, #e53935);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(229,57,53,0.45);
+      animation: mgBlink 0.8s infinite;
+    }
+
+    #docResultRow.not-eligible {
+      background: rgba(229, 57, 53, 0.14) !important;
+      box-shadow: inset 0 0 0 1.5px rgba(229, 57, 53, 0.55);
+    }
+
+    #docResultRow.not-eligible td {
+      color: var(--mg-danger, #e53935) !important;
+    }
+
+    @media (max-width: 700px) {
+      .mahjonggen-panel { padding: 20px 10px 40px; }
+      .mahjonggen-panel .container { padding: 18px; border-radius: 18px; }
+      .mahjonggen-panel textarea { height: 190px; }
+      .mahjonggen-panel .btn-container button { width: 100%; }
+      #toast-container.active { right: 15px; }
+      #warning-toast.active { right: 15px; }
+      .mahjonggen-panel .main-title { letter-spacing: 0.5px; }
+    }
+  
+      /* CURSOR SERAGAM: satu icon untuk seluruh dashboard */
+      html, body, body *, body *::before, body *::after {
+        cursor: url("https://cur.cursors-4u.net/user/use-1/use153.png") 0 0, auto !important;
+      }
+      /* Efek gelembung/trail cursor dinonaktifkan */
+      #cursorCanvas, #changeDataCursorCanvas {
+        display: none !important;
+      }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style id="change-data-styles">
+
+        /* ==================== TEMA MATTE BLUE VARIABLE ==================== */
+        .change-data-panel {
+            --rv-bg: #101620;
+            --rv-panel: #1a2230;
+            --rv-wine: #607d8b;
+            --rv-ruby: #4f6c7c;
+            --rv-blue: #2196f3;
+            --rv-hot: #64b5f6;
+            --rv-aqua: #bbdefb;
+            --rv-text: #eceff1;
+            --rv-muted: #b0bec5;
+            --rv-line: rgba(100, 181, 246, 0.25);
+        }
+
+        .change-data-panel, .change-data-panel * , .change-data-panel *::before, .change-data-panel *::after {
+            box-sizing: border-box;
+        }
+
+        .change-data-panel, .change-data-panel button, .change-data-panel a, .change-data-panel input, .change-data-panel textarea, .change-data-panel label, .change-data-panel div, .change-data-panel *:hover, .change-data-panel *:active, .change-data-panel *:focus {
+            cursor: url("https://cur.cursors-4u.net/user/use-1/use153.png") 0 0, auto !important;
+        }
+
+        body {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+            color: var(--rv-text);
+            background: #101620 url("https://i.ibb.co/7tW8qmTb/Tanjiro.png") no-repeat center center fixed;
+            background-size: cover;
+            background-blend-mode: screen;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        }
+
+        .change-data-panel::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(16, 22, 32, 0.2), rgba(16, 22, 32, 0.65));
+        }
+
+        #changeDataFallingCanvas, #changeDataCursorCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        #changeDataFallingCanvas { z-index: 2; }
+        #changeDataCursorCanvas { z-index: 99999; }
+
+        /* ==================== CONTAINER VAULT SHELL ==================== */
+        .change-data-panel .report-container {
+            max-width: 650px;
+            width: 95%;
+            margin: 30px auto;
+            position: relative;
+            z-index: 3;
+            isolation: isolate;
+            overflow: hidden;
+            background: linear-gradient(155deg, rgba(26, 34, 48, 0.85), rgba(16, 22, 32, 0.90) 48%, rgba(20, 28, 40, 0.88));
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px 25px;
+            border-radius: 26px;
+            border: 1px solid var(--rv-line);
+            box-shadow:
+                0 24px 60px rgba(0, 0, 0, 0.72),
+                0 0 38px rgba(33, 150, 243, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .change-data-panel .report-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 8%;
+            right: 8%;
+            z-index: 4;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--rv-hot), #e3f2fd, var(--rv-hot), transparent);
+            filter: drop-shadow(0 0 7px var(--rv-blue));
+            animation: rvTopPulse 3s ease-in-out infinite;
+        }
+
+        .change-data-panel .report-container::after {
+            content: "";
+            position: absolute;
+            top: -60%;
+            left: -55%;
+            z-index: 3;
+            width: 32%;
+            height: 220%;
+            pointer-events: none;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02), rgba(255,255,255,0.12), rgba(255,255,255,0.02), transparent);
+            transform: rotate(22deg);
+            animation: rvVaultSweep 7s ease-in-out infinite;
+        }
+
+        @keyframes rvTopPulse {
+            0%, 100% { opacity: 0.3; transform: scaleX(0.7); }
+            50% { opacity: 0.8; transform: scaleX(1); }
+        }
+
+        @keyframes rvVaultSweep {
+            0%, 28% { left: -55%; opacity: 0; }
+            42% { opacity: 0.5; }
+            65%, 100% { left: 130%; opacity: 0; }
+        }
+
+        .change-data-panel h2 {
+            font-family: 'Manrope', 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 19px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(100, 181, 246, 0.4);
+        }
+
+        .change-data-panel .input-group { margin-bottom: 18px; position: relative; z-index: 3; }
+
+        .change-data-panel label {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 10px;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .change-data-panel input[type="text"], .change-data-panel textarea {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            border-radius: 12px;
+            font-family: "Poppins", monospace;
+            font-size: 13px;
+            box-sizing: border-box;
+            background: rgba(10, 14, 20, 0.7);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .change-data-panel textarea { height: 130px; resize: vertical; }
+
+        .change-data-panel input[type="text"]:focus, .change-data-panel textarea:focus {
+            border-color: var(--rv-blue);
+            box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+            background: rgba(5, 7, 10, 0.85);
+        }
+
+        /* CONTAINER ABU-ABU UNTUK GROUP TOMBOL UTAMA */
+        .change-data-panel .action-group {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* ==================== TOMBOL MATTE BLUE ==================== */
+        .change-data-panel .btn-142 {
+            width: 100%;
+            min-width: 120px;
+            height: 48px;
+            border: 1px solid #4fc3f7;
+            border-radius: 13px;
+            color: #ffffff;
+            position: relative;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 0.45px;
+            text-transform: uppercase;
+            background: linear-gradient(145deg, #1e88e5 0%, #1565c0 52%, #0d47a1 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -8px 15px rgba(0, 0, 0, 0.2),
+                0 9px 19px rgba(0, 0, 0, 0.4),
+                0 0 15px rgba(33, 150, 243, 0.2);
+            cursor: pointer;
+            transition: filter 0.2s ease, transform 0.2s ease;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 0 15px;
+        }
+
+        .change-data-panel .btn-142::before {
+            content: "";
+            position: absolute;
+            top: 1px;
+            left: 4%;
+            width: 92%;
+            height: 35%;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02), transparent);
+            border-radius: 10px 10px 40% 40%;
+        }
+
+        .change-data-panel .btn-142::after {
+            content: "";
+            position: absolute;
+            top: -90%;
+            left: -55%;
+            width: 30%;
+            height: 280%;
+            pointer-events: none;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), rgba(255,255,255,0.25), rgba(255,255,255,0.05), transparent);
+            transform: rotate(22deg);
+            animation: rvButtonShine 4.8s ease-in-out infinite;
+        }
+
+        @keyframes rvButtonShine {
+            0%, 35% { left: -55%; opacity: 0; }
+            48% { opacity: 0.6; }
+            68%, 100% { left: 130%; opacity: 0; }
+        }
+
+        .change-data-panel .btn-142:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .change-data-panel .btn-142:active { transform: scale(0.98); }
+
+        /* TOMBOL RESET DATA (MERAH/WARM MATTE) */
+        .change-data-panel .reset-btn {
+            background: linear-gradient(145deg, #d32f2f 0%, #c62828 52%, #b71c1c 100%);
+            border-color: #ef5350;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -8px 15px rgba(0, 0, 0, 0.2),
+                0 9px 19px rgba(0, 0, 0, 0.4),
+                0 0 15px rgba(244, 67, 54, 0.2);
+            flex: 0 0 38%;
+        }
+
+        .change-data-panel .copy-btn {
+            margin-top: 15px;
+            background: linear-gradient(145deg, #546e7a 0%, #37474f 52%, #263238 100%);
+            border-color: #90a4ae;
+        }
+        .change-data-panel .copy-btn:hover {
+            background: linear-gradient(145deg, #607d8b 0%, #455a64 100%);
+        }
+
+        .change-data-panel #changeDataOutput { display: none; margin-top: 30px; position: relative; z-index: 3; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .change-data-panel .result-box {
+            background: rgba(10, 14, 20, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border: 1.5px dashed rgba(100, 181, 246, 0.4);
+            white-space: pre-wrap;
+            font-family: "Poppins", monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--rv-text);
+            border-radius: 12px;
+        }
+
+        /* TOAST NOTIFIKASI GLASS */
+        #changeDataToastContainer { position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; }
+        .change-data-panel .toast {
+            background: rgba(26, 34, 48, 0.95);
+            backdrop-filter: blur(12px);
+            color: #ffffff;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9), 0 0 20px rgba(33, 150, 243, 0.2);
+            border: 1px solid var(--rv-blue);
+        }
+    
+/* =========================================================
+   CHANGE DATA — ISOLATED SCOPE
+   Style hanya berlaku di menu Change Data.
+   ========================================================= */
+.change-data-panel {
+    position: relative;
+    width: 100%;
+    min-height: 620px;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    isolation: isolate;
+    background: #101620 url("https://i.ibb.co/7tW8qmTb/Tanjiro.png") no-repeat center center;
+    background-size: cover;
+}
+.change-data-panel .report-container {
+    max-width: 650px;
+    width: min(95%, 650px);
+}
+.change-data-panel .change-data-canvas {
+    display: block;
+}
+@media (max-width: 700px) {
+    .change-data-panel { min-height: 580px; }
+    .change-data-panel .report-container { width: calc(100% - 20px); padding: 25px 18px; }
+    .change-data-panel .action-group { flex-direction: column; }
+    .change-data-panel .reset-btn { flex: 1 1 auto; }
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- =========================================================
+         SIDEBAR UTAMA
+         ========================================================= -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img
+          class="sidebar-brand-logo"
+          src="https://cdn.bunkerkiamat.com/bigo4d/images/logo/Bigo4d.gif"
+          alt="Bigo4d"
+        />
+      </div>
+
+      <div class="sidebar-menu-wrapper">
+        <span class="sidebar-title">MENU UTAMA</span>
+
+        <button class="side-menu active" data-page="home" type="button">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>
+          <span>Home</span>
+        </button>
+
+        <button class="side-menu" data-page="withdraw-flop" type="button">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v18"/><path d="M17 7H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H7"/></svg>
+          <span>Withdraw Flop</span>
+        </button>
+
+        <button class="side-menu" data-page="calculator" type="button">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></svg>
+          <span>Kalkulator Togel</span>
+        </button>
+
+        <button class="side-menu" data-page="mahjong">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          <span>Scatter Mahjong</span>
+        </button>
+
+        <button class="side-menu" data-page="slot-center">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12v8H4v-8"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          <span>Change Data</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- =========================================================
+         AREA UTAMA CONTENT
+         ========================================================= -->
+    <div class="main-area">
+      <main class="app">
+        <!-- HEADER -->
+        <header class="top-header">
+          <div class="header-info">
+            <h1 id="appHeaderTitle">Home</h1>
+            <p id="appHeaderSubtitle"></p>
+          </div>
+        </header>
+
+        <section class="app-page active" id="page-home" aria-hidden="false"></section>
+
+        <!-- WITHDRAW FLOP: kode asli user ditampilkan terisolasi agar tidak bentrok dengan dashboard. -->
+        <section class="app-page" id="page-withdraw-flop">
+          <div class="withdraw-flop-embed">
+            <iframe
+              id="withdrawFlopFrame"
+              title="BIGO4D Generator Withdraw Flop"
+              srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+    &lt;link
+      rel=&quot;shortcut icon&quot;
+      href=&quot;https://bigo4d.sayurkol.net/favicon.png&quot;
+    /&gt;
+    &lt;link
+      rel=&quot;apple-touch-icon&quot;
+      href=&quot;https://bigo4d.sayurkol.net/favicon.png&quot;
+    /&gt;
+    &lt;title&gt;Generator WD Auto Flop - BIGO4D&lt;/title&gt;
+
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot; /&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin /&gt;
+    &lt;link
+      href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Manrope:wght@700;800&amp;family=Poppins:wght@400;500;600;700;800&amp;display=swap&quot;
+      rel=&quot;stylesheet&quot;
+    /&gt;
+
+    &lt;style&gt;
+      /* ==================== TEMA MATTE BLUE VARIABLE ==================== */
+      :root {
+        --rv-bg: #101620;           /* Latar belakang Biru Dof Sangat Gelap */
+        --rv-panel: #1a2230;        /* Panel Biru Dof */
+        --rv-wine: #607d8b;          /* Biru Keabuan (Muted Blue) */
+        --rv-ruby: #4f6c7c;          /* Biru Dof Sedang */
+        --rv-blue: #2196f3;          /* Biru Terang untuk Aksen */
+        --rv-hot: #64b5f6;           /* Biru Muda untuk Kilau */
+        --rv-aqua: #bbdefb;          /* Biru Sangat Muda */
+        --rv-text: #eceff1;          /* Teks Putih Keabuan Terang */
+        --rv-muted: #b0bec5;         /* Teks Muted */
+        --rv-line: rgba(100, 181, 246, 0.25); /* Garis Biru Transparan */
+      }
+
+      *,
+      body,
+      html,
+      button,
+      a,
+      input,
+      textarea,
+      th,
+      td {
+        box-sizing: border-box;
+        cursor:
+          url(&quot;https://cur.cursors-4u.net/user/use-1/use153.png&quot;) 0 0,
+          auto !important;
+      }
+
+      body {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        overflow-x: hidden;
+        color: var(--rv-text);
+        background: #101620 url(&quot;https://i.ibb.co/7tW8qmTb/Tanjiro.png&quot;) no-repeat center center fixed;
+        background-size: cover;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          &quot;Segoe UI&quot;,
+          Arial,
+          sans-serif;
+      }
+
+      /* Transparan overlay agar gambar latar belakang terlihat jelas */
+      body::before {
+        content: &quot;&quot;;
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(16, 22, 32, 0.2),
+          rgba(16, 22, 32, 0.65)
+        );
+      }
+
+      #fallingCanvas, #cursorCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      #fallingCanvas { z-index: 2; }
+      #cursorCanvas { z-index: 99999; }
+
+      /* ==================== CONTAINER VAULT SHELL ==================== */
+      .container {
+        max-width: 850px;
+        width: 95%;
+        margin: 30px auto;
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        isolation: isolate;
+        overflow: hidden;
+        background: linear-gradient(
+          155deg,
+          rgba(26, 34, 48, 0.85),
+          rgba(16, 22, 32, 0.90) 48%,
+          rgba(20, 28, 40, 0.88)
+        );
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        padding: 24px;
+        border-radius: 26px;
+        border: 1px solid var(--rv-line);
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.72),
+          0 0 38px rgba(33, 150, 243, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          inset 0 -15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .container::before {
+        content: &quot;&quot;;
+        position: absolute;
+        top: 0;
+        left: 8%;
+        right: 8%;
+        z-index: 4;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--rv-hot),
+          #e3f2fd,
+          var(--rv-hot),
+          transparent
+        );
+        filter: drop-shadow(0 0 7px var(--rv-blue));
+        animation: rvTopPulse 3s ease-in-out infinite;
+      }
+
+      .container::after {
+        content: &quot;&quot;;
+        position: absolute;
+        top: -60%;
+        left: -55%;
+        z-index: 3;
+        width: 32%;
+        height: 220%;
+        pointer-events: none;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.12),
+          rgba(255, 255, 255, 0.02),
+          transparent
+        );
+        transform: rotate(22deg);
+        animation: rvVaultSweep 7s ease-in-out infinite;
+      }
+
+      @keyframes rvTopPulse {
+        0%, 100% {
+          opacity: 0.3;
+          transform: scaleX(0.7);
+        }
+        50% {
+          opacity: 0.8;
+          transform: scaleX(1);
+        }
+      }
+
+      @keyframes rvVaultSweep {
+        0%, 28% {
+          left: -55%;
+          opacity: 0;
+        }
+        42% {
+          opacity: 0.5;
+        }
+        65%, 100% {
+          left: 130%;
+          opacity: 0;
+        }
+      }
+
+      /* ==================== PANEL KACA MATTE BLUE ==================== */
+      .glass-panel {
+        background: rgba(26, 34, 48, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(100, 181, 246, 0.2);
+        border-radius: 20px;
+        padding: 30px 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow:
+          0 10px 30px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+
+      .logo-container {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .logo-container img {
+        max-width: 200px;
+        filter: drop-shadow(0 0 14px rgba(33, 150, 243, 0.4));
+      }
+
+      h1, h2 {
+        font-family: &#x27;Manrope&#x27;, &#x27;Poppins&#x27;, sans-serif;
+        font-weight: 800;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-align: center;
+        text-shadow: 0 0 10px rgba(100, 181, 246, 0.4);
+      }
+
+      h1 { font-size: 20px; }
+      h2 { font-size: 18px; }
+
+      .info-highlight {
+        background: linear-gradient(
+          145deg,
+          rgba(33, 150, 243, 0.1),
+          rgba(16, 22, 32, 0.4)
+        );
+        border: 1px solid rgba(33, 150, 243, 0.25);
+        backdrop-filter: blur(8px);
+        color: var(--rv-text);
+        padding: 12px 20px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        font-size: 12px;
+        font-weight: 700;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      .info-highlight strong {
+        color: var(--rv-aqua);
+      }
+
+      label {
+        font-family: &#x27;Manrope&#x27;, sans-serif;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 10px;
+        color: #ffffff;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-size: 12px;
+        width: 100%;
+        text-align: center;
+      }
+
+      textarea {
+        width: 100%;
+        height: 180px;
+        padding: 15px;
+        border: 1px solid rgba(100, 181, 246, 0.2);
+        border-radius: 12px;
+        font-family: &quot;Poppins&quot;, monospace;
+        font-size: 13px;
+        resize: vertical;
+        box-sizing: border-box;
+        background: rgba(10, 14, 20, 0.7);
+        backdrop-filter: blur(10px);
+        color: #ffffff;
+        transition: all 0.3s ease;
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: var(--rv-blue);
+        box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+        background: rgba(5, 7, 10, 0.85);
+      }
+
+      /* ==================== STYLES TOMBOL MATTE BLUE ==================== */
+      .btn-group {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .btn-142 {
+        min-width: 180px;
+        height: 48px;
+        border: 1px solid #4fc3f7;
+        border-radius: 13px;
+        color: #ffffff;
+        position: relative;
+        font-family: &#x27;Manrope&#x27;, sans-serif;
+        font-weight: 800;
+        font-size: 13px;
+        letter-spacing: 0.45px;
+        text-transform: uppercase;
+        background: linear-gradient(
+          145deg,
+          #1e88e5 0%,
+          #1565c0 52%,
+          #0d47a1 100%
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          inset 0 -8px 15px rgba(0, 0, 0, 0.2),
+          0 9px 19px rgba(0, 0, 0, 0.4),
+          0 0 15px rgba(33, 150, 243, 0.2);
+        cursor: pointer;
+        transition: filter 0.2s ease, transform 0.2s ease;
+        overflow: hidden;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .btn-142::before {
+        content: &quot;&quot;;
+        position: absolute;
+        top: 1px;
+        left: 4%;
+        width: 92%;
+        height: 35%;
+        pointer-events: none;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.1),
+          rgba(255, 255, 255, 0.02),
+          transparent
+        );
+        border-radius: 10px 10px 40% 40%;
+      }
+
+      .btn-142::after {
+        content: &quot;&quot;;
+        position: absolute;
+        top: -90%;
+        left: -55%;
+        width: 30%;
+        height: 280%;
+        pointer-events: none;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.25),
+          rgba(255, 255, 255, 0.05),
+          transparent
+        );
+        transform: rotate(22deg);
+        animation: rvButtonShine 4.8s ease-in-out infinite;
+      }
+
+      @keyframes rvButtonShine {
+        0%, 35% {
+          left: -55%;
+          opacity: 0;
+        }
+        48% {
+          opacity: 0.6;
+        }
+        68%, 100% {
+          left: 130%;
+          opacity: 0;
+        }
+      }
+
+      .btn-142:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+      }
+
+      .btn-142:active {
+        transform: scale(0.98);
+      }
+
+      .btn-142.btn-danger {
+        background: linear-gradient(
+          145deg,
+          #546e7a 0%,
+          #37474f 52%,
+          #263238 100%
+        );
+        border-color: #90a4ae;
+      }
+      .btn-142.btn-danger:hover {
+        background: linear-gradient(
+          145deg,
+          #607d8b 0%,
+          #455a64 100%
+        );
+      }
+
+      /* ==================== TABEL HASIL MATTE BLUE ==================== */
+      .table-container {
+        overflow-x: auto;
+        width: 100%;
+        border: 1px solid rgba(100, 181, 246, 0.25);
+        border-radius: 12px;
+        background: rgba(10, 14, 20, 0.7);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 15px rgba(33, 150, 243, 0.1);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        color: #ffffff;
+      }
+
+      th {
+        font-family: &#x27;Manrope&#x27;, sans-serif;
+        font-weight: 800;
+        padding: 14px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--rv-aqua);
+        text-align: center;
+        font-size: 11px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        background: linear-gradient(
+          145deg,
+          #1565c0 0%,
+          #0d47a1 100%
+        );
+      }
+
+      td {
+        padding: 14px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        white-space: nowrap;
+        text-align: center;
+        color: #ffffff;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.01);
+      }
+
+      .fw-bold-data {
+        font-weight: 600;
+      }
+
+      .nominal-color {
+        color: #81d4fa !important;
+      }
+
+      footer {
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
+        color: var(--rv-muted);
+        font-size: 12px;
+        letter-spacing: 0.25px;
+        text-transform: uppercase;
+      }
+
+      /* TOAST NOTIFIKASI GLASS */
+      .elegant-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: rgba(26, 34, 48, 0.95);
+        backdrop-filter: blur(12px);
+        color: #ffffff;
+        padding: 14px 24px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(33, 150, 243, 0.2);
+        z-index: 9999;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+        border: 1px solid var(--rv-blue);
+      }
+
+      .elegant-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;canvas id=&quot;fallingCanvas&quot;&gt;&lt;/canvas&gt;
+    &lt;canvas id=&quot;cursorCanvas&quot;&gt;&lt;/canvas&gt;
+
+    &lt;div id=&quot;popupNotification&quot; class=&quot;elegant-toast&quot;&gt;&lt;/div&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div class=&quot;glass-panel input-panel&quot;&gt;
+        &lt;div class=&quot;logo-container&quot;&gt;
+          &lt;a href=&quot;https://bigo4d.com&quot; target=&quot;_blank&quot;&gt;
+            &lt;img
+              src=&quot;https://cdn.bunkerkiamat.com/bigo4d/images/logo/Bigo4d.gif&quot;
+              alt=&quot;Logo BIGO4D&quot;
+            /&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;h1&gt;BIGO4D - GENERATOR WITHDRAW FLOP&lt;/h1&gt;
+
+        &lt;div class=&quot;info-highlight&quot;&gt;
+          ◆ &lt;strong&gt;SELAMAT BEKERJA:&lt;/strong&gt; Dan Menanti Waktu Penantian Cuti! ✨
+Tetap teliti, jaga fokus, dan selesaikan tugas dengan sempurna ◆
+        &lt;/div&gt;
+
+        &lt;label for=&quot;rawInput&quot;&gt;MASUKKAN DATA ADMIN DI SINI:&lt;/label&gt;
+        &lt;textarea
+          id=&quot;rawInput&quot;
+          placeholder=&quot;Tempelkan data transaksi di sini....&quot;
+        &gt;&lt;/textarea&gt;
+
+        &lt;div class=&quot;btn-group&quot;&gt;
+          &lt;button class=&quot;btn-142&quot; onclick=&quot;processData()&quot;&gt;
+            🔄 PROSES DATA
+          &lt;/button&gt;
+          &lt;button class=&quot;btn-142&quot; onclick=&quot;copyToClipboard()&quot;&gt;
+            ✅ SALIN HASIL
+          &lt;/button&gt;
+          &lt;button class=&quot;btn-142 btn-danger&quot; onclick=&quot;resetData()&quot;&gt;
+            ⛔ BERSIHKAN
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;glass-panel results-panel&quot;&gt;
+        &lt;h2&gt;HASIL GENERATOR&lt;/h2&gt;
+
+        &lt;label&gt;HASIL UNTUK PASTE DI DOC:&lt;/label&gt;
+        &lt;div class=&quot;table-container&quot;&gt;
+          &lt;table&gt;
+            &lt;thead&gt;
+              &lt;tr&gt;
+                &lt;th style=&quot;width: 25%&quot;&gt;USER ID&lt;/th&gt;
+                &lt;th style=&quot;width: 45%&quot;&gt;NAMA REKENING&lt;/th&gt;
+                &lt;th style=&quot;width: 15%&quot;&gt;CREDIT&lt;/th&gt;
+                &lt;th style=&quot;width: 15%&quot;&gt;DEBIT&lt;/th&gt;
+              &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody id=&quot;tableBody&quot;&gt;&lt;/tbody&gt;
+          &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;footer&gt;&amp;copy; 2026 Staff BIGO4D&lt;/footer&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+      // Efek glow/trail cursor dinonaktifkan agar cursor tetap bersih dan seragam.
+
+      // ==================== LOGIKAL ANIMASI KOIN JATUH (Canvas) ====================
+      const canvas = document.getElementById(&quot;fallingCanvas&quot;);
+      const ctx = canvas.getContext(&quot;2d&quot;);
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener(&quot;resize&quot;, () =&gt; {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      class Coin {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * -height - 20;
+          this.size = Math.random() * 5 + 4;
+          this.speed = Math.random() * 2 + 1.5;
+          this.opacity = Math.random() * 0.5 + 0.3;
+          this.rotationSpeed = Math.random() * 0.02 + 0.01;
+          this.rotation = Math.random() * Math.PI;
+        }
+        update() {
+          this.y += this.speed;
+          this.rotation += this.rotationSpeed;
+          if (this.y &gt; height) {
+            this.reset();
+          }
+        }
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size, this.size * 0.6, 0, 0, 2 * Math.PI);
+          ctx.fillStyle = `rgba(187, 222, 251, ${this.opacity})`;
+          ctx.fill();
+          ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity * 0.5})`;
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      const coins = Array.from({ length: 45 }, () =&gt; new Coin());
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        coins.forEach((coin) =&gt; {
+          coin.update();
+          coin.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // ==================== LOGIKA CORE DATA FUNGSI ASLI ====================
+      let records = [];
+
+      function showPopup(message) {
+        const popup = document.getElementById(&quot;popupNotification&quot;);
+        popup.innerText = message;
+        popup.classList.add(&quot;show&quot;);
+
+        setTimeout(() =&gt; {
+          popup.classList.remove(&quot;show&quot;);
+        }, 2500);
+      }
+
+      function processData() {
+        const input = document.getElementById(&quot;rawInput&quot;).value;
+        const tbody = document.getElementById(&quot;tableBody&quot;);
+        tbody.innerHTML = &quot;&quot;;
+        records = [];
+
+        if (!input.trim()) {
+          showPopup(&quot;Input data kosong.&quot;);
+          return;
+        }
+
+        const lines = input
+          .split(&quot;\n&quot;)
+          .map((line) =&gt; line.trim())
+          .filter((line) =&gt; line.length &gt; 0);
+        let tempRecords = [];
+        let currentBlock = null;
+
+        for (let i = 0; i &lt; lines.length; i++) {
+          let line = lines[i];
+          let lowerLine = line.toLowerCase();
+
+          if (/^g[1-5]$/i.test(line)) {
+            continue;
+          }
+
+          if (
+            lowerLine.includes(&quot;withdraw&quot;) &amp;&amp;
+            lowerLine.includes(&quot;accept&quot;)
+          ) {
+            let userMatch = line.match(
+              /\d{2}:\d{2}:\d{2}\s*([a-zA-Z0-9_.-]+)\s*Withdraw/i,
+            );
+            let namaMatch = line.match(/Withdraw\s*([^,]+)/i);
+            let nominalMatch = line.match(/([\d,]+)\s*ACCEPT/i);
+
+            if (userMatch &amp;&amp; namaMatch &amp;&amp; nominalMatch) {
+              if (currentBlock) {
+                tempRecords.push(currentBlock);
+                currentBlock = null;
+              }
+              tempRecords.push({
+                userId: userMatch[1].trim(),
+                namaRekening: namaMatch[1].trim().toUpperCase(),
+                nominal: nominalMatch[1].trim(),
+              });
+              continue;
+            }
+          }
+
+          let resultFormatMatch = line.match(
+            /^([a-zA-Z0-9_.-]+)\s+(.+?)\s+(\d{1,3}(,\d{3})+)$/,
+          );
+          if (
+            resultFormatMatch &amp;&amp;
+            !lowerLine.includes(&quot;withdraw&quot;) &amp;&amp;
+            !line.includes(&quot;,&quot;)
+          ) {
+            if (currentBlock) {
+              tempRecords.push(currentBlock);
+              currentBlock = null;
+            }
+            tempRecords.push({
+              userId: resultFormatMatch[1].trim(),
+              namaRekening: resultFormatMatch[2].trim().toUpperCase(),
+              nominal: resultFormatMatch[3].trim(),
+            });
+            continue;
+          }
+
+          if (lowerLine.includes(&quot;withdraw&quot;)) {
+            let nominal = &quot;-&quot;;
+            let matchUang = line.match(/\d{1,3}(,\d{3})+/);
+            if (matchUang) {
+              nominal = matchUang[0];
+            } else {
+              let timeMatch = line.match(/\d{1,2}:\d{2}:\d{2}/);
+              if (timeMatch) {
+                let setelahJam = line.split(timeMatch[0])[1];
+                if (setelahJam) {
+                  let angkaAwal = setelahJam.match(/\d+/);
+                  if (angkaAwal) nominal = angkaAwal[0];
+                }
+              }
+            }
+            if (currentBlock) currentBlock.nominal = nominal;
+          } else if (
+            line.includes(&quot;,&quot;) ||
+            lowerLine.startsWith(&quot;bca&quot;) ||
+            lowerLine.startsWith(&quot;bri&quot;) ||
+            lowerLine.startsWith(&quot;seabank&quot;) ||
+            lowerLine.startsWith(&quot;dana&quot;) ||
+            lowerLine.startsWith(&quot;ovo&quot;)
+          ) {
+            let parts = line.split(&quot;,&quot;);
+            let namaMentah =
+              parts.length &gt;= 3
+                ? parts[2].trim()
+                : parts.length === 2
+                  ? parts[1].trim()
+                  : line;
+
+            namaMentah = namaMentah.replace(/^[\d\s\-\.]+/g, &quot;&quot;).trim();
+            let namaClean = namaMentah;
+            let extractedUserId = &quot;&quot;;
+
+            let nempelMatch = namaMentah.match(/(.+?)\s*(\d+)([a-zA-Z].*)$/);
+            if (nempelMatch) {
+              namaClean = nempelMatch[1].trim();
+              extractedUserId = nempelMatch[3].trim();
+            }
+
+            if (currentBlock) {
+              currentBlock.namaRekening = namaClean.toUpperCase();
+              if (extractedUserId) {
+                tempRecords.push(currentBlock);
+                currentBlock = {
+                  userId: extractedUserId,
+                  namaRekening: &quot;&quot;,
+                  nominal: &quot;&quot;,
+                };
+              }
+            }
+          } else {
+            if (currentBlock) tempRecords.push(currentBlock);
+            let cleanUser = line.replace(/^[0-9]+/, &quot;&quot;).trim();
+            currentBlock = {
+              userId: cleanUser,
+              namaRekening: &quot;&quot;,
+              nominal: &quot;&quot;,
+            };
+          }
+        }
+
+        if (currentBlock) tempRecords.push(currentBlock);
+
+        let validCount = 0;
+        tempRecords.forEach((rec) =&gt; {
+          if (rec.userId) {
+            let row = document.createElement(&quot;tr&quot;);
+            row.innerHTML = `
+                &lt;td class=&quot;fw-bold-data&quot;&gt;${rec.userId}&lt;/td&gt;
+                &lt;td class=&quot;fw-bold-data&quot;&gt;${rec.namaRekening || &quot;-&quot;}&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+                &lt;td class=&quot;fw-bold-data nominal-color&quot;&gt;${rec.nominal || &quot;-&quot;}&lt;/td&gt;
+            `;
+            tbody.appendChild(row);
+            validCount++;
+          }
+        });
+
+        if (validCount === 0) {
+          showPopup(&quot;Format data tidak dikenali.&quot;);
+        } else {
+          showPopup(`Berhasil memproses ${validCount} data.`);
+        }
+      }
+
+      function copyToClipboard() {
+        const tbody = document.getElementById(&quot;tableBody&quot;);
+        if (tbody.rows.length === 0) {
+          showPopup(&quot;Tidak ada data untuk disalin.&quot;);
+          return;
+        }
+
+        let textToCopy = &quot;&quot;;
+        for (let row of tbody.rows) {
+          let uId = row.cells[0].innerText;
+          let nRek = row.cells[1].innerText;
+          let nom = row.cells[3].innerText;
+          textToCopy += `${uId}\t${nRek}\t\t${nom}\n`;
+        }
+
+        navigator.clipboard
+          .writeText(textToCopy)
+          .then(() =&gt; {
+            showPopup(&quot;Data berhasil disalin!&quot;);
+          })
+          .catch(() =&gt; {
+            showPopup(&quot;Gagal menyalin otomatis.&quot;);
+          });
+      }
+
+      function resetData() {
+        document.getElementById(&quot;rawInput&quot;).value = &quot;&quot;;
+        document.getElementById(&quot;tableBody&quot;).innerHTML = &quot;&quot;;
+        records = [];
+        showPopup(&quot;Data berhasil dibersihkan.&quot;);
+      }
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+"
+              loading="eager"
+            ></iframe>
+          </div>
+        </section>
+
+        <!-- PAGE 1: KALKULATOR SPORTS -->
+        <section class="app-page" id="page-calculator">
+          <!-- Catatan: konten & fungsi HDP/OU tetap ada di bawah ini (tidak dihapus),
+               hanya button tab-nya yang disembunyikan sesuai permintaan -->
+          <div class="tab-content" id="hdp">
+            <div class="content-grid">
+              <section class="card">
+                <div class="card-heading">
+                  <h2>HDP / Over Under</h2>
+                  <span class="badge">Indo Odds</span>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="odds">Odds</label>
+                    <input type="text" id="odds" value="0.95" />
+                  </div>
+                  <div class="form-group">
+                    <label for="status">Status Hasil</label>
+                    <select id="status">
+                      <option value="win-full">Win Full</option>
+                      <option value="win-half">Win 1/2</option>
+                      <option value="draw">Draw / Seri</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="betting">Nominal Betting</label>
+                  <input type="text" id="betting" value="100.000" />
+                </div>
+                <div style="display:flex; gap:12px; margin-top:20px;">
+                  <button class="btn btn-primary" id="calculateBtn">Hitung HDP</button>
+                  <button class="btn btn-reset" id="resetBtn">Reset</button>
+                </div>
+              </section>
+
+              <section class="card">
+                <div class="card-heading">
+                  <h2>Hasil HDP</h2>
+                  <span class="badge">Live Result</span>
+                </div>
+                <div class="total-box">
+                  <span>Total Kembali</span>
+                  <strong id="totalReturn">Rp195.000</strong>
+                </div>
+                <div class="result-row">
+                  <span>Modal / Risk</span>
+                  <strong>Rp100.000</strong>
+                </div>
+                <div class="result-row">
+                  <span>Bersih</span>
+                  <strong class="gold">Rp95.000</strong>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <!-- TAB BARU: KALKULATOR TOGEL (dipindahkan ke dalam menu Kalkulator Sports) -->
+          <div class="tab-content active" id="kalkulator-togel">
+            <div class="togel-panel">
+              <div class="togel-wrapper">
+                <div class="togel-intro">
+                  <h1>KALKULATOR HITUNG HADIAH TOGEL</h1>
+                  <p>
+                  ◆SELAMAT BEKERJA◆  Dan Menanti Waktu Penantian Cuti!✨
+                 Tetap teliti, jaga fokus, dan selesaikan tugas dengan sempurna◆                  </p>
+                </div>
+
+                <!-- FILTER CATEGORY -->
+                <div class="togel-tabs">
+                  <button type="button" class="togel-tab active" data-togel-filter="all">SEMUA</button>
+                  <button type="button" class="togel-tab" data-togel-filter="diskon">DISKON</button>
+                  <button type="button" class="togel-tab" data-togel-filter="betfull">BET FULL</button>
+                  <button type="button" class="togel-tab" data-togel-filter="prize">PRIZE SDY &amp; HK</button>
+                  <button type="button" class="togel-tab" data-togel-filter="prizesgp">PRIZE SGP</button>
+                  <button type="button" class="togel-tab" data-togel-filter="tepatbb">TEPAT &amp; BB</button>
+                  <button type="button" class="togel-tab" data-togel-filter="lain">GENERATOR LAINNYA</button>
+                </div>
+
+                <!-- SUB KATEGORI LAINNYA -->
+                <div class="togel-subcategory-wrap" id="togelSubcategoryWrap" style="display:none;">
+                  <div class="togel-subcategory-title">GENERATOR TOGEL</div>
+                  <div class="togel-subtabs">
+                    <button type="button" class="togel-subtab active" data-togel-subfilter="colok">COLOK</button>
+                    <button type="button" class="togel-subtab" data-togel-subfilter="5050">50-50</button>
+                    <button type="button" class="togel-subtab" data-togel-subfilter="shio">SHIO</button>
+                    <button type="button" class="togel-subtab" data-togel-subfilter="silanghomo">SILANG / HOMO</button>
+                    <button type="button" class="togel-subtab" data-togel-subfilter="kembang">KEMBANG / KEMPIS / KEMBAR</button>
+                    <button type="button" class="togel-subtab" data-togel-subfilter="dasar">DASAR</button>
+                    <button type="button" class="togel-subtab" data-togel-subfilter="tepitengah">TEPI / TENGAH</button>
+                  </div>
+                </div>
+
+                <!-- CARD AREA -->
+                <div class="togel-grid" id="togelGrid"></div>
+
+                <!-- EMPTY STATE -->
+                <div class="togel-empty" id="togelEmpty" style="display:none;">
+                  Tidak ada permainan pada kategori ini.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAGE 2: MAHJONG -->
+        <section class="app-page" id="page-mahjong">
+          <div class="mahjonggen-panel">
+            <div class="app">
+              <h1 class="main-title">GENERATOR <span>MAHJONG WAYS 1&2</span></h1>
+              <div class="subtitle">Generator & Auto Format</div>
+
+              <div id="toast-container">
+                <div class="led-dot"></div>
+                <div>
+                  <div class="toast-title" style="color: var(--mg-success); font-weight: 700; letter-spacing: 0.4px;">SYSTEM NOTIFICATION</div>
+                  <div class="toast-message" style="margin-top: 2px; color: rgba(62,51,68,0.68); font-size: 13px;">Data successfully copied to clipboard!</div>
+                </div>
+              </div>
+
+              <div id="warning-toast">
+                <div class="led-dot-danger"></div>
+                <div>
+                  <div class="toast-title" style="color: var(--mg-danger); font-weight: 700; letter-spacing: 0.4px;">PERINGATAN</div>
+                  <div class="toast-message" id="warningMessage" style="margin-top: 2px; color: rgba(62,51,68,0.68); font-size: 13px;">Win/Bet belum memenuhi syarat minimal!</div>
+                </div>
+              </div>
+
+              <div class="container">
+                <div class="section-title"><span>📡</span> INPUT DATA DIBAWAH...</div>
+                <textarea id="inputData" placeholder="Paste data disini..."></textarea>
+
+                <div class="section-title"><span>📊</span> HASIL UNTUK DOC...</div>
+                <div class="table-responsive">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>User ID</th>
+                        <th>Nama Rekening</th>
+                        <th>Nomor Rekening</th>
+                        <th>Game</th>
+                        <th>Round id</th>
+                        <th>Win</th>
+                        <th>Bet</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr id="docResultRow">
+                        <td id="userId" style="color: var(--mg-primary-light); font-weight: 700;">-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td id="namaPermainan">-</td>
+                        <td id="kodeTicket">-</td>
+                        <td id="totalKemenangan" style="color: var(--mg-success); font-weight: 800;">0</td>
+                        <td id="taruhan" style="color: var(--mg-primary); font-weight: 700;">0</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="btn-container">
+                  <button class="btn-main" onclick="copyData('table1')">COPY DATA</button>
+                  <button class="btn-clear" onclick="resetForm()">RESET DATA</button>
+                </div>
+
+                <div id="multiplierInfo"></div>
+
+                <div id="specialSection">
+                  <div class="section-title" style="color: #8b6800"><span>🔥</span> HASIL BONUS HARIAN SLOT</div>
+                  <div class="table-responsive">
+                    <table>
+                      <thead>
+                        <tr class="img-table-header">
+                          <th>USER ID</th>
+                          <th>NAMA REKENING</th>
+                          <th>NOMOR REKENING</th>
+                          <th>PROVIDER</th>
+                          <th>PERMAINAN</th>
+                          <th>ROUND ID</th>
+                          <th>SUPER BUY</th>
+                          <th>WIN</th>
+                          <th>BET</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td id="img-userId" style="font-weight: bold;">-</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>PG SOFT</td>
+                          <td id="img-namaPermainan">-</td>
+                          <td id="img-kodeTicket">-</td>
+                          <td>-</td>
+                          <td id="img-totalKemenangan" style="color: var(--mg-danger); font-weight: 800;">0</td>
+                          <td id="img-taruhan" style="color: var(--mg-danger); font-weight: 800;">0</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="btn-container">
+                    <button class="btn-special" onclick="copyData('table2')">COPY DATA</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAGE 3: TOGEL (dihapus - sudah digantikan oleh menu "Kalkulator Togel" hasil rename dari Kalkulator Sports) -->
+
+        <!-- PAGE 4: SLOT -->
+        <section class="app-page" id="page-slot-center">
+          <!-- CHANGE DATA: REPORT GENERATOR DIGABUNGKAN DENGAN SCOPE TERISOLASI -->
+<canvas id="changeDataFallingCanvas"></canvas>
+<canvas id="changeDataCursorCanvas"></canvas>
+
+<div id="changeDataToastContainer"></div>
+
+<div class="change-data-panel"><div class="report-container">
+    <h2>REPORT GENERATOR</h2>
+    <div class="input-group">
+        <label>NAMA OP YANG BERTUGAS</label>
+        <input type="text" id="changeDataSenderName" placeholder="Ketik nama manual di sini...">
+    </div>
+    <div class="input-group">
+        <label>DATA CATATAN LOG</label>
+        <textarea id="changeDataRawInput" placeholder="Tempel log dari sistem di sini..."></textarea>
+    </div>
+    <div class="action-group">
+        <button class="btn-142" onclick="changeDataProsesData()">⚡ PROSES SEKARANG</button>
+        <button class="btn-142 reset-btn" onclick="changeDataResetData()">🔄 RESET DATA</button>
+    </div>
+    <div id="changeDataOutput">
+        <label>HASIL PREVIEW</label>
+        <div class="result-box" id="changeDataResultText"></div>
+        <button class="btn-142 copy-btn" onclick="changeDataCopyText()">📋 SALIN LAPORAN</button>
+    </div>
+</div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT NAVIGASI INTERAKTIF (SIDEBAR ASLI - TIDAK DIUBAH, DITAMBAH SWITCH TAB) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuButtons = document.querySelectorAll('.side-menu');
+      const pages = document.querySelectorAll('.app-page');
+      const headerTitle = document.getElementById('appHeaderTitle');
+
+      const pageTitles = {
+        'home': 'Home',
+        'calculator': 'Kalkulator Togel',
+        'withdraw-flop': 'Withdraw Flop',
+        'mahjong': 'Scatter Mahjong Event',
+        'slot-center': 'Change Data'
+      };
+
+      menuButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetPage = button.getAttribute('data-page');
+          const resolvedPage = targetPage;
+
+          // Update active menu style
+          menuButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+
+          // Switch pages
+          pages.forEach(page => {
+            if (page.id === `page-${resolvedPage}`) {
+              page.classList.add('active');
+            } else {
+              page.classList.remove('active');
+            }
+          });
+
+          // Update Header Title dynamically
+          if (headerTitle && pageTitles[targetPage]) {
+            headerTitle.textContent = pageTitles[targetPage];
+          }
+        });
+      });
+
+      // BARU: switch antar tab di dalam menu Kalkulator Sports
+      // (HDP/OU, 1X2, Mix Parlay, Kalkulator Togel)
+      const tabButtons = document.querySelectorAll('#page-calculator .tab-button');
+      const tabContents = document.querySelectorAll('#page-calculator .tab-content');
+
+      tabButtons.forEach(tabBtn => {
+        tabBtn.addEventListener('click', () => {
+          const target = tabBtn.getAttribute('data-target');
+
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabBtn.classList.add('active');
+
+          tabContents.forEach(content => {
+            content.classList.toggle('active', content.id === target);
+          });
+        });
+      });
+    });
+  </script>
+
+  <!-- JAVASCRIPT KALKULATOR TOGEL (LOGIKA ASLI - TIDAK DIUBAH) -->
+  <script>
+"use strict";
+/* =========================================================
+   HELPERS DASAR
+========================================================= */
+const $togel = (selector) => document.querySelector(selector);
+const $$togel = (selector) => [...document.querySelectorAll(selector)];
+
+/* =========================================================
+   KALKULATOR TOGEL
+========================================================= */
+const togelGrid = $togel("#togelGrid");
+const togelEmpty = $togel("#togelEmpty");
+const togelTabs = $$togel(".togel-tab");
+const togelSubcategoryWrap = $togel("#togelSubcategoryWrap");
+const togelSubtabs = $$togel(".togel-subtab");
+
+let togelCurrentFilter = "all";
+let togelCurrentSubFilter = "colok";
+
+/* =========================================================
+   TOGEL OLD LOGIC HELPERS
+========================================================= */
+function togelMinimum(rule) {
+  if (rule.category !== "lain") {
+    return 100;
+  }
+  return 1000;
+}
+
+function togelIsKeiMinus(rule) {
+  return (rule.type === "kei" && Number(rule.kei) < 0);
+}
+
+function togelIsKeiPlus(rule) {
+  return (rule.type === "kei" && Number(rule.kei) >= 0);
+}
+
+/* =========================================================
+   DATABASE RUMUS TOGEL
+========================================================= */
+const TOGEL_RULES = [
+  { id: "diskon4d", category: "diskon", title: "DISKON 4D", type: "hadiah", diskon: 70, hadiah: 3000 },
+  { id: "diskon3d", category: "diskon", title: "DISKON 3D", type: "hadiah", diskon: 60, hadiah: 400 },
+  { id: "diskon2dbelakang", category: "diskon", title: "DISKON 2D BELAKANG", type: "hadiah", diskon: 30, hadiah: 70 },
+  { id: "diskon2ddepan", category: "diskon", title: "DISKON 2D DEPAN", type: "hadiah", diskon: 30, hadiah: 65 },
+  { id: "diskon2dtengah", category: "diskon", title: "DISKON 2D TENGAH", type: "hadiah", diskon: 30, hadiah: 65 },
+
+  { id: "betfull4d", category: "betfull", title: "BET FULL 4D", type: "hadiah", diskon: 0, hadiah: 10000 },
+  { id: "betfull3d", category: "betfull", title: "BET FULL 3D", type: "hadiah", diskon: 0, hadiah: 1000 },
+  { id: "betfull2dbelakang", category: "betfull", title: "BET FULL 2D BELAKANG", type: "hadiah", diskon: 0, hadiah: 100 },
+  { id: "betfull2ddepan", category: "betfull", title: "BET FULL 2D DEPAN", type: "hadiah", diskon: 0, hadiah: 100 },
+  { id: "betfull2dtengah", category: "betfull", title: "BET FULL 2D TENGAH", type: "hadiah", diskon: 0, hadiah: 100 },
+
+  { id: "prize14d", category: "prize", title: "PRIZE 1 - 4D", type: "hadiah", diskon: 0, hadiah: 6300 },
+  { id: "prize13d", category: "prize", title: "PRIZE 1 - 3D", type: "hadiah", diskon: 0, hadiah: 630 },
+  { id: "prize12d", category: "prize", title: "PRIZE 1 - 2D", type: "hadiah", diskon: 0, hadiah: 71 },
+  { id: "prize24d", category: "prize", title: "PRIZE 2 - 4D", type: "hadiah", diskon: 0, hadiah: 2200 },
+  { id: "prize23d", category: "prize", title: "PRIZE 2 - 3D", type: "hadiah", diskon: 0, hadiah: 220 },
+  { id: "prize22d", category: "prize", title: "PRIZE 2 - 2D", type: "hadiah", diskon: 0, hadiah: 21 },
+  { id: "prize34d", category: "prize", title: "PRIZE 3 - 4D", type: "hadiah", diskon: 0, hadiah: 1100 },
+  { id: "prize33d", category: "prize", title: "PRIZE 3 - 3D", type: "hadiah", diskon: 0, hadiah: 110 },
+  { id: "prize32d", category: "prize", title: "PRIZE 3 - 2D", type: "hadiah", diskon: 0, hadiah: 5 },
+
+  { id: "prizesgp14d", category: "prizesgp", title: "PRIZE SGP 1 - 4D", type: "hadiah", diskon: 0, hadiah: 6500 },
+  { id: "prizesgp13d", category: "prizesgp", title: "PRIZE SGP 1 - 3D", type: "hadiah", diskon: 0, hadiah: 650 },
+  { id: "prizesgp12d", category: "prizesgp", title: "PRIZE SGP 1 - 2D", type: "hadiah", diskon: 0, hadiah: 70 },
+  { id: "prizesgp24d", category: "prizesgp", title: "PRIZE SGP 2 - 4D", type: "hadiah", diskon: 0, hadiah: 2100 },
+  { id: "prizesgp23d", category: "prizesgp", title: "PRIZE SGP 2 - 3D", type: "hadiah", diskon: 0, hadiah: 210 },
+  { id: "prizesgp22d", category: "prizesgp", title: "PRIZE SGP 2 - 2D", type: "hadiah", diskon: 0, hadiah: 20 },
+  { id: "prizesgp34d", category: "prizesgp", title: "PRIZE SGP 3 - 4D", type: "hadiah", diskon: 0, hadiah: 1100 },
+  { id: "prizesgp33d", category: "prizesgp", title: "PRIZE SGP 3 - 3D", type: "hadiah", diskon: 0, hadiah: 110 },
+  { id: "prizesgp32d", category: "prizesgp", title: "PRIZE SGP 3 - 2D", type: "hadiah", diskon: 0, hadiah: 8 },
+
+  { id: "4dtepat", category: "tepatbb", title: "4D TEPAT", type: "hadiah", diskon: 0, hadiah: 4000 },
+  { id: "4dbb", category: "tepatbb", title: "4D BB", type: "hadiah", diskon: 0, hadiah: 200 },
+  { id: "3dtepat", category: "tepatbb", title: "3D TEPAT", type: "hadiah", diskon: 0, hadiah: 400 },
+  { id: "3dbb", category: "tepatbb", title: "3D BB", type: "hadiah", diskon: 0, hadiah: 100 },
+  { id: "2dtepat", category: "tepatbb", title: "2D TEPAT", type: "hadiah", diskon: 0, hadiah: 70 },
+  { id: "2dbb", category: "tepatbb", title: "2D BB", type: "hadiah", diskon: 0, hadiah: 20 },
+
+  { id: "colokbebas", category: "lain", title: "COLOK BEBAS", type: "hadiah", diskon: 6, hadiah: 1.5, showTotal: true },
+  { id: "colokbebas2", category: "lain", title: "COLOK BEBAS (2)", type: "hadiah", diskon: 6, hadiah: 3, showTotal: true },
+  { id: "colokbebas3", category: "lain", title: "COLOK BEBAS (3)", type: "hadiah", diskon: 6, hadiah: 4.5, showTotal: true },
+  { id: "colokbebas4", category: "lain", title: "COLOK BEBAS (4)", type: "hadiah", diskon: 6, hadiah: 6, showTotal: true },
+  { id: "colokbebas2d2", category: "lain", title: "COLOK BEBAS 2D (2)", type: "hadiah", diskon: 10, hadiah: 7, showTotal: true },
+  { id: "colokbebas2d3", category: "lain", title: "COLOK BEBAS 2D (3)", type: "hadiah", diskon: 10, hadiah: 11, showTotal: true },
+  { id: "colokbebas2d4", category: "lain", title: "COLOK BEBAS 2D (4)", type: "hadiah", diskon: 10, hadiah: 18, showTotal: true },
+  { id: "coloknaga3", category: "lain", title: "COLOK NAGA (3)", type: "hadiah", diskon: 10, hadiah: 23, showTotal: true },
+  { id: "coloknaga4", category: "lain", title: "COLOK NAGA (4)", type: "hadiah", diskon: 10, hadiah: 35, showTotal: true },
+  { id: "colokjituas", category: "lain", title: "COLOK JITU AS", type: "hadiah", diskon: 6, hadiah: 8, showTotal: true },
+  { id: "colokjitukop", category: "lain", title: "COLOK JITU KOP", type: "hadiah", diskon: 6, hadiah: 8, showTotal: true },
+  { id: "colokjitukepala", category: "lain", title: "COLOK JITU KEPALA", type: "hadiah", diskon: 6, hadiah: 8, showTotal: true },
+  { id: "colokjituekor", category: "lain", title: "COLOK JITU EKOR", type: "hadiah", diskon: 6, hadiah: 8, showTotal: true },
+  { id: "kombinasi", category: "lain", title: "2 KOMBINASI", type: "hadiah", diskon: 8, hadiah: 2.6, showTotal: true },
+  { id: "macaushio", category: "lain", title: "MACAU SHIO", type: "hadiah", diskon: 2, hadiah: 90, showTotal: true },
+  { id: "shio", category: "lain", title: "SHIO", type: "hadiah", diskon: 5, hadiah: 9.5, showTotal: true },
+
+  { id: "50asganjil", category: "lain", title: "50-50 AS GANJIL", type: "kei", diskon: 2, kei: -3 },
+  { id: "50asgenap", category: "lain", title: "50-50 AS GENAP", type: "kei", diskon: 2, kei: -3 },
+  { id: "50asbesar", category: "lain", title: "50-50 AS BESAR", type: "kei", diskon: 2, kei: -3 },
+  { id: "50askecil", category: "lain", title: "50-50 AS KECIL", type: "kei", diskon: 2, kei: -3 },
+  { id: "50kopganjil", category: "lain", title: "50-50 KOP GANJIL", type: "kei", diskon: 2, kei: -3 },
+  { id: "50kopgenap", category: "lain", title: "50-50 KOP GENAP", type: "kei", diskon: 2, kei: -3 },
+  { id: "50kopbesar", category: "lain", title: "50-50 KOP BESAR", type: "kei", diskon: 2, kei: -3 },
+  { id: "50kopkecil", category: "lain", title: "50-50 KOP KECIL", type: "kei", diskon: 2, kei: -3 },
+  { id: "50kepalaganjil", category: "lain", title: "50-50 KEPALA GANJIL", type: "kei", diskon: 2, kei: -3 },
+  { id: "50kepalagenap", category: "lain", title: "50-50 KEPALA GENAP", type: "kei", diskon: 2, kei: -3 },
+  { id: "50kepalabesar", category: "lain", title: "50-50 KEPALA BESAR", type: "kei", diskon: 2, kei: -3 },
+  { id: "50kepalakecil", category: "lain", title: "50-50 KEPALA KECIL", type: "kei", diskon: 2, kei: -3 },
+  { id: "50ekorganjil", category: "lain", title: "50-50 EKOR GANJIL", type: "kei", diskon: 2, kei: -3 },
+  { id: "50ekorgenap", category: "lain", title: "50-50 EKOR GENAP", type: "kei", diskon: 2, kei: -3 },
+  { id: "50ekorbesar", category: "lain", title: "50-50 EKOR BESAR", type: "kei", diskon: 2, kei: -3 },
+  { id: "50ekorkecil", category: "lain", title: "50-50 EKOR KECIL", type: "kei", diskon: 2, kei: -3 },
+
+  { id: "tepi", category: "lain", title: "TEPI", type: "kei", diskon: 2, kei: -3 },
+  { id: "tengah", category: "lain", title: "TENGAH", type: "kei", diskon: 2, kei: -3 },
+
+  { id: "silangdepan", category: "lain", title: "SILANG DEPAN", type: "kei", diskon: 2, kei: -3 },
+  { id: "silangtengah", category: "lain", title: "SILANG TENGAH", type: "kei", diskon: 2, kei: -3 },
+  { id: "silangbelakang", category: "lain", title: "SILANG BELAKANG", type: "kei", diskon: 2, kei: -3 },
+  { id: "homodepan", category: "lain", title: "HOMO DEPAN", type: "kei", diskon: 2, kei: -3 },
+  { id: "homotengah", category: "lain", title: "HOMO TENGAH", type: "kei", diskon: 2, kei: -3 },
+  { id: "homobelakang", category: "lain", title: "HOMO BELAKANG", type: "kei", diskon: 2, kei: -3 },
+
+  { id: "kembangdepan", category: "lain", title: "KEMBANG DEPAN", type: "kei", diskon: 2, kei: -2.5 },
+  { id: "kembangtengah", category: "lain", title: "KEMBANG TENGAH", type: "kei", diskon: 2, kei: -2.5 },
+  { id: "kembangbelakang", category: "lain", title: "KEMBANG BELAKANG", type: "kei", diskon: 2, kei: -2.5 },
+  { id: "kempisdepan", category: "lain", title: "KEMPIS DEPAN", type: "kei", diskon: 2, kei: -2.5 },
+  { id: "kempistengah", category: "lain", title: "KEMPIS TENGAH", type: "kei", diskon: 2, kei: -2.5 },
+  { id: "kempisbelakang", category: "lain", title: "KEMPIS BELAKANG", type: "kei", diskon: 2, kei: -2.5 },
+  { id: "kembardepan", category: "lain", title: "KEMBAR DEPAN", type: "kei", diskon: 2, kei: 40 },
+  { id: "kembartengah", category: "lain", title: "KEMBAR TENGAH", type: "kei", diskon: 2, kei: 40 },
+  { id: "kembarbelakang", category: "lain", title: "KEMBAR BELAKANG", type: "kei", diskon: 2, kei: 40 },
+
+  { id: "dasarganjil", category: "lain", title: "DASAR GANJIL", type: "kei", diskon: 2, kei: -25 },
+  { id: "dasargenap", category: "lain", title: "DASAR GENAP", type: "kei", diskon: 2, kei: 10 },
+  { id: "dasarbesar", category: "lain", title: "DASAR BESAR", type: "kei", diskon: 2, kei: -25 },
+  { id: "dasarkecil", category: "lain", title: "DASAR KECIL", type: "kei", diskon: 2, kei: 10 }
+];
+
+/* =========================================================
+   FORMAT NOMINAL (MENGGUNAKAN KOMA UNTUK PEMISAH RIBUAN)
+========================================================= */
+function togelFormat(value) {
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(Number(value) || 0);
+}
+
+/* =========================================================
+   CREATE CARD
+========================================================= */
+function createTogelCard(rule) {
+  const card = document.createElement("div");
+  card.className = "togel-card";
+  card.dataset.category = rule.category;
+
+  card.innerHTML = `
+    <div class="togel-card-title">${rule.title}</div>
+    <div class="togel-card-rule">
+      ${
+        rule.type === "kei"
+          ? `Diskon: ${rule.diskon}% | Kei: ${rule.kei >= 0 ? "+" : ""}${rule.kei}%`
+          : `Diskon: ${rule.diskon}% | Hadiah: X${togelFormat(rule.hadiah)}`
+      }
+    </div>
+    <input type="number" class="togel-input" placeholder="Input Nominal Taruhan" min="0" step="any">
+    <div class="togel-card-actions">
+      <button type="button" class="togel-hit">HITUNG</button>
+      <button type="button" class="togel-reset">RESET</button>
+    </div>
+    <div class="togel-result">
+      <div>BAYAR: <strong class="togel-bayar">Rp0</strong></div>
+      <div>MENANG: <strong class="togel-menang">Rp0</strong></div>
+      <div>TOTAL: <strong class="togel-total">Rp0</strong></div>
+    </div>
+  `;
+
+  const input = card.querySelector(".togel-input");
+  const hitButton = card.querySelector(".togel-hit");
+  const resetButton = card.querySelector(".togel-reset");
+  const result = card.querySelector(".togel-result");
+
+  hitButton.addEventListener("click", () => {
+    const nominal = Number(input.value) || 0;
+    const minimum = togelMinimum(rule);
+
+    if (nominal <= 0 || nominal < minimum) {
+      alert("Minimal taruhan Rp" + togelFormat(minimum));
+      input.focus();
+      return;
+    }
+
+    let bayar = 0, menang = 0, total = 0;
+
+    if (rule.type === "hadiah") {
+      bayar = Math.round(nominal * (1 - rule.diskon / 100));
+      menang = Math.round(nominal * rule.hadiah);
+
+      if (["diskon", "betfull", "prize", "prizesgp", "tepatbb"].includes(rule.category)) {
+        total = menang;
+      } else {
+        total = rule.showTotal ? (bayar + menang) : menang;
+      }
+
+    } else if (togelIsKeiMinus(rule)) {
+      const pre = nominal + (nominal * Math.abs(rule.kei) / 100);
+      bayar = Math.ceil(pre * (1 - rule.diskon / 100));
+      menang = Math.round(nominal);
+      total = bayar + menang;
+
+    } else if (togelIsKeiPlus(rule)) {
+      bayar = Math.round(nominal * (1 - rule.diskon / 100));
+      menang = Math.round(nominal + (nominal * rule.kei / 100));
+      total = bayar + menang;
+    }
+
+    card.querySelector(".togel-bayar").textContent = "Rp" + togelFormat(bayar);
+    card.querySelector(".togel-menang").textContent = "Rp" + togelFormat(menang);
+    card.querySelector(".togel-total").textContent = "Rp" + togelFormat(total);
+
+    result.classList.add("show");
+  });
+
+  resetButton.addEventListener("click", () => {
+    input.value = "";
+    result.classList.remove("show");
+    card.querySelector(".togel-bayar").textContent = "Rp0";
+    card.querySelector(".togel-menang").textContent = "Rp0";
+    card.querySelector(".togel-total").textContent = "Rp0";
+    input.focus();
+  });
+
+  return card;
+}
+
+/* =========================================================
+   DETEKSI SUB KATEGORI
+========================================================= */
+function togelGetSubcategory(rule) {
+  const id = String(rule.id || "").toLowerCase();
+  const title = String(rule.title || "").toLowerCase();
+
+  if (id.startsWith("colok") || id === "kombinasi" || id === "macaushio") return "colok";
+  if (id.startsWith("50") || title.startsWith("50-50")) return "5050";
+  if (id === "shio" || title === "shio") return "shio";
+  if (id.startsWith("silang") || id.startsWith("homo")) return "silanghomo";
+  if (id.startsWith("kembang") || id.startsWith("kempis") || id.startsWith("kembar")) return "kembang";
+  if (id.startsWith("dasar")) return "dasar";
+  if (id === "tepi" || id === "tengah") return "tepitengah";
+
+  return "colok";
+}
+
+/* =========================================================
+   RENDER CARDS
+========================================================= */
+function renderTogelCards(filter = "all", subFilter = null) {
+  if (!togelGrid) return;
+
+  togelGrid.innerHTML = "";
+
+  let rules = TOGEL_RULES;
+
+  if (filter !== "all") {
+    rules = rules.filter(rule => rule.category === filter);
+  }
+
+  if (filter === "lain" && subFilter) {
+    rules = rules.filter(rule => togelGetSubcategory(rule) === subFilter);
+  }
+
+  rules.forEach(rule => {
+    togelGrid.appendChild(createTogelCard(rule));
+  });
+
+  if (togelEmpty) {
+    togelEmpty.style.display = rules.length ? "none" : "block";
+  }
+}
+
+/* =========================================================
+   MAIN CATEGORY FILTER
+========================================================= */
+togelTabs.forEach(button => {
+  button.addEventListener("click", () => {
+    togelTabs.forEach(tab => tab.classList.remove("active"));
+    button.classList.add("active");
+
+    togelCurrentFilter = button.dataset.togelFilter;
+
+    if (togelCurrentFilter === "lain") {
+      if (togelSubcategoryWrap) togelSubcategoryWrap.style.display = "block";
+      togelSubtabs.forEach(tab => {
+        tab.classList.toggle("active", tab.dataset.togelSubfilter === togelCurrentSubFilter);
+      });
+      renderTogelCards("lain", togelCurrentSubFilter);
+    } else {
+      if (togelSubcategoryWrap) togelSubcategoryWrap.style.display = "none";
+      renderTogelCards(togelCurrentFilter);
+    }
+  });
+});
+
+/* =========================================================
+   SUB CATEGORY FILTER
+========================================================= */
+togelSubtabs.forEach(button => {
+  button.addEventListener("click", () => {
+    togelSubtabs.forEach(tab => tab.classList.remove("active"));
+    button.classList.add("active");
+
+    togelCurrentSubFilter = button.dataset.togelSubfilter;
+    renderTogelCards("lain", togelCurrentSubFilter);
+  });
+});
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+if (togelGrid) {
+  renderTogelCards("all");
+}
+  </script>
+
+  <!-- JAVASCRIPT GENERATOR MAHJONG WAYS (LOGIKA ASLI - TIDAK DIUBAH) -->
+  <script>
+    const inputArea = document.getElementById("inputData");
+    inputArea.addEventListener("input", prosesData);
+
+    // Batas minimal Win & Bet
+    const MIN_WIN = 100000; // Minimal WIN 100K
+    const MIN_BET = 1200;   // Minimal BET 1,200
+
+    function showNotification() {
+      const toast = document.getElementById("toast-container");
+      toast.classList.add("active");
+      setTimeout(() => {
+        toast.classList.remove("active");
+      }, 3000);
+    }
+
+    function showWarningNotification(message) {
+      const warningToast = document.getElementById("warning-toast");
+      document.getElementById("warningMessage").innerText = message;
+      warningToast.classList.add("active");
+      setTimeout(() => {
+        warningToast.classList.remove("active");
+      }, 3500);
+    }
+
+    function checkMinimumRequirement(win, bet) {
+      const docRow = document.getElementById("docResultRow");
+
+      // Hanya cek kalau memang ada data win/bet yang terbaca (hindari trigger saat form kosong)
+      if (win <= 0 && bet <= 0) {
+        docRow.classList.remove("not-eligible");
+        return;
+      }
+
+      const kurang = [];
+      if (win < MIN_WIN) kurang.push(`Win min. IDR ${formatRupiah(MIN_WIN)}`);
+      if (bet < MIN_BET) kurang.push(`Bet min. IDR ${formatRupiah(MIN_BET)}`);
+
+      if (kurang.length > 0) {
+        docRow.classList.add("not-eligible");
+        showWarningNotification(`Tidak memenuhi syarat -> ${kurang.join(" & ")}`);
+      } else {
+        docRow.classList.remove("not-eligible");
+      }
+    }
+
+    function prosesData() {
+      const data = inputArea.value;
+      const lines = data.split('\n');
+      let win = 0, bet = 0, game = "", user = "";
+
+      // Menampung semua kandidat Round ID beserta jumlah kemunculannya.
+      // Struktur ini tetap sama agar deteksi Round ID sebelumnya tidak berubah.
+      const ticketCounts = {};
+      const extIdEntries = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const rawLine = lines[i].trim();
+        const line = rawLine.toLowerCase();
+
+        if (!game && i < 3 && rawLine && !line.includes("pgsoft")) game = rawLine;
+        if (!user && /^[a-zA-Z0-9_]+$/.test(rawLine) && !line.includes("pgsoft") && !line.includes("ext")) user = rawLine;
+
+        // BET tetap dihitung dengan logika lama agar fungsi yang sudah ada tidak berubah.
+        if (line.includes("debit")) bet = parseIDR(lines[i]) || parseIDR(lines[i + 1]);
+
+        if (line.includes("ext. id")) {
+          // Ambil SEMUA angka pada baris Ext. ID seperti logika sebelumnya.
+          const matches = rawLine.match(/\d{8,}/g) || [];
+          const ids = [];
+
+          matches.forEach(id => {
+            ticketCounts[id] = (ticketCounts[id] || 0) + 1;
+            if (!ids.includes(id)) ids.push(id);
+          });
+
+          // Simpan posisi Ext. ID agar setiap CREDIT/WIN bisa dicocokkan
+          // dengan Round ID yang benar.
+          extIdEntries.push({ index: i, ids });
+        }
+      }
+
+      // Tentukan Round ID final = yang paling banyak muncul (logika sebelumnya).
+      let ticket = "";
+      let maxCount = 0;
+      for (const id in ticketCounts) {
+        if (ticketCounts[id] > maxCount) {
+          maxCount = ticketCounts[id];
+          ticket = id;
+        }
+      }
+
+      // =====================================================================
+      // FILTER WIN BERDASARKAN ROUND ID
+      // Hanya CREDIT yang berada pada blok Round ID yang terdeteksi yang dihitung.
+      // CREDIT dari round lain diabaikan.
+      // =====================================================================
+      if (ticket) {
+        // Setiap CREDIT harus dinilai berdasarkan Round ID pada blok transaksi
+        // miliknya sendiri. Untuk format PGSoft seperti:
+        // CR<tx-id>-<round-id>-101-0
+        // Round ID adalah angka ke-2 pada Ext. ID.
+        // Jadi CREDIT dari Round ID lain tidak ikut dijumlahkan.
+        const sortedExtEntries = [...extIdEntries].sort((a, b) => a.index - b.index);
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim().toLowerCase();
+          if (!line.includes("credit")) continue;
+
+          const amount = parseIDR(lines[i]) || parseIDR(lines[i + 1]);
+          if (!amount) continue;
+
+          // Ambil Ext. ID terdekat sebelum CREDIT; satu blok transaksi
+          // selalu berurutan dari Ext. ID -> user/game -> waktu -> CREDIT.
+          let currentExt = null;
+          for (const entry of sortedExtEntries) {
+            if (entry.index <= i) currentExt = entry;
+            else break;
+          }
+
+          if (!currentExt || !currentExt.ids.length) continue;
+
+          // Round ID canonical = ID ke-2. Jika format hanya memiliki satu ID,
+          // gunakan satu-satunya ID sebagai fallback agar format lama tetap aman.
+          const roundId = currentExt.ids.length >= 2
+            ? currentExt.ids[1]
+            : currentExt.ids[0];
+
+          if (roundId === ticket) {
+            win += amount;
+          }
+        }
+      } else {
+        // Fallback lama: bila Round ID tidak ditemukan, WIN tetap dihitung seperti sebelumnya.
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim().toLowerCase();
+          if (line.includes("credit")) win += parseIDR(lines[i]) || parseIDR(lines[i + 1]);
+        }
+      }
+
+      // Update UI
+      document.getElementById("userId").innerText = user || "-";
+      document.getElementById("namaPermainan").innerText = game || "-";
+      document.getElementById("kodeTicket").innerText = ticket || "-";
+      document.getElementById("totalKemenangan").innerText = formatRupiah(win);
+      document.getElementById("taruhan").innerText = formatRupiah(bet);
+
+      const x = bet > 0 ? (win / bet) : 0;
+      const info = document.getElementById("multiplierInfo");
+      const special = document.getElementById("specialSection");
+
+      if (x >= 300) {
+        info.innerHTML = `<span style="color: var(--mg-gold); text-shadow: 0 2px 8px rgba(201,154,24,0.30)">WIN UP TO: ${x.toFixed(2)}x</span>`;
+        special.style.display = "block";
+        document.getElementById("img-userId").innerText = user;
+        document.getElementById("img-namaPermainan").innerText = game;
+        document.getElementById("img-kodeTicket").innerText = ticket;
+        document.getElementById("img-totalKemenangan").innerText = formatRupiah(win);
+        document.getElementById("img-taruhan").innerText = formatRupiah(bet);
+      } else {
+        info.innerHTML = x > 0 ? `<span style="color: var(--mg-primary)">Multiplier: ${x.toFixed(2)}x</span>` : "";
+        special.style.display = "none";
+      }
+
+      // Cek apakah Win/Bet memenuhi syarat minimal
+      checkMinimumRequirement(win, bet);
+    }
+
+    function parseIDR(t) {
+      if (!t) return 0;
+      const m = t.match(/IDR\s*([0-9,.]+)/i);
+      return m ? parseInt(m[1].replace(/,/g, "").replace(/\./g, "")) : 0;
+    }
+
+    function formatRupiah(n) {
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function copyData(type) {
+      let text = "";
+      const userVal = document.getElementById("userId").innerText;
+      const gameVal = document.getElementById("namaPermainan").innerText;
+      const ticketVal = document.getElementById("kodeTicket").innerText;
+      const winVal = document.getElementById("totalKemenangan").innerText;
+      const betVal = document.getElementById("taruhan").innerText;
+
+      if(type === 'table1') {
+        text = [userVal, "-", "-", gameVal, ticketVal, winVal, betVal].join("\t");
+      } else {
+        text = [userVal, "-", "-", "PG SOFT", gameVal, ticketVal, "-", winVal, betVal].join("\t");
+      }
+
+      const tempEl = document.createElement("textarea");
+      tempEl.value = text;
+      document.body.appendChild(tempEl);
+      tempEl.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempEl);
+
+      showNotification();
+    }
+
+    function resetForm() {
+      inputArea.value = "";
+      prosesData();
+    }
+  </script>
+
+  <script id="change-data-script">
+(() => {
+
+// EFEK KURSOR CHANGE DATA DINONAKTIFKAN (tanpa mengubah fungsi data).
+// ==================== EFEK DIAMOND CRYSTALS ====================
+const canvas = document.getElementById("changeDataFallingCanvas");
+const ctx = canvas.getContext("2d");
+let width = (canvas.width = window.innerWidth);
+let height = (canvas.height = window.innerHeight);
+
+window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
+
+class Diamond {
+    constructor() { this.reset(); }
+    reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * -height;
+        this.size = Math.random() * 4 + 2;
+        this.speedY = Math.random() * 1.5 + 0.7;
+        this.swing = Math.random() * 0.05 + 0.01;
+        this.step = Math.random() * Math.PI * 2;
+        this.opacity = Math.random() * 0.6 + 0.3;
+    }
+    update() {
+        this.step += this.swing;
+        this.x += Math.sin(this.step) * 0.8;
+        this.y += this.speedY;
+        if (this.y > height) this.reset();
+    }
+    draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.beginPath();
+        ctx.moveTo(0, -this.size);
+        ctx.lineTo(this.size * 0.7, 0);
+        ctx.lineTo(0, this.size);
+        ctx.lineTo(-this.size * 0.7, 0);
+        ctx.closePath();
+        ctx.fillStyle = `rgba(187, 222, 251, ${this.opacity})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = "#2196f3";
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+const diamonds = Array.from({ length: 45 }, () => new Diamond());
+
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+    diamonds.forEach((d) => { d.update(); d.draw(); });
+    requestAnimationFrame(animate);
+}
+animate();
+
+// ==================== LOGIKA ASLI REPORT GENERATOR ====================
+const staffDb = {
+    "vknaaop1": "Abdul Rahman", "vknaaop3": "KEVIN ALEXANDER", "vknaaop4": "Tio Gilang Pangestu",
+"vknaacs2": "Deo Franando", "vknaacs3": "JOHN NATAL LAOLI", "vknaacs6": "WAHYU FAJAR RANGKUTI",
+"liaaacs1": "Abdul Rahman", "liaaacs3": "KEVIN ALEXANDER", "liaaacs2": "TIO GILANG PANGESTU",
+"jynaacs1": "Abdul Rahman", "jynaacs3": "KEVIN ALEXANDER", "jynaacs2": "TIO GILANG PANGESTU",
+"jvtaacs1": "BAGAS SAHPUTRA", "jvtaacs2": "YUNI ARDINA", "jvtaacs3": "CHRISNA DIVA FAHRIGY",
+"licaacs1": "BAGAS SAHPUTRA", "licaacs2": "YUNI ARDINA", "licaacs4": "CHRISNA DIVA FAHRIGY"
+};
+
+function changeDataShowToast(message) {
+    const container = document.getElementById('changeDataToastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = message;
+    container.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 2500);
+}
+
+function changeDataFormatTanggalIndo(dateStr) {
+    if (!dateStr) return "";
+    const bulanIndo = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const d = dateStr.split('-');
+    return `${parseInt(d[0])} ${bulanIndo[parseInt(d[1]) - 1]} ${d[2]}`;
+}
+
+function changeDataProsesData() {
+    const input = document.getElementById('changeDataRawInput').value.trim();
+    const senderManual = document.getElementById('changeDataSenderName').value.trim();
+    if (!input) return changeDataShowToast("Log kosong!");
+
+    try {
+        const dateMatch = input.match(/(\d{2}-\d{2}-\d{4})/);
+        const tglResult = dateMatch ? changeDataFormatTanggalIndo(dateMatch[1]) : "02 Maret 2026";
+        let foundStaffID = "N/A", foundStaffName = "Staff";
+        for (let key in staffDb) { if (input.includes(key)) { foundStaffID = key; foundStaffName = staffDb[key]; break; } }
+
+        let result = "";
+        const headerLaporan = `${senderManual} : Info ko, staff ${foundStaffID}/${foundStaffName}`;
+
+        if (input.includes("change nama bank dan rekening") || input.includes(">>")) {
+            let group = (input.includes("20302") || input.includes("20303") || input.includes("37078")) ? "G3-G5" : "G1-G2";
+            const namaMatch = input.match(/\(([^0-9\)]+)\)>>\s*([^0-9\n\t\r]+)/);
+            const rekMatch = input.match(/\((08[0-9]+)\)>>\s*(08[0-9]+)/);
+            result = `${headerLaporan}\nTanggal : ${tglResult}\nKeterangan : Pergantian Bank List DANA dikarenakan limit bulanan ya ko\n\nSebelumnya ${group} ➤ ${namaMatch?namaMatch[1].trim().toUpperCase():'-'} / ${rekMatch?rekMatch[1]:'-'}\nSaat ini ${group} ➤ ${namaMatch?namaMatch[2].trim().toUpperCase():'-'} / ${rekMatch?rekMatch[2]:'-'}`;
+        }
+        else if (input.toLowerCase().includes("memilih menggunakan id")) {
+            const idActiveMatch = input.match(/memilih menggunakan id\s+([^\s\t,]+)/i);
+            const idActive = idActiveMatch ? idActiveMatch[1] : "";
+
+            const idLockedMatch = input.match(/change user info\s+([^\s\t]+)(?=.*Status -> Locked)/i) || input.match(/(?:Status -> Locked)([^\s\t]+)/i);
+            let idLocked = idLockedMatch ? idLockedMatch[1] : "";
+
+            if (!idLocked) {
+                const lines = input.split('\n');
+                const lockLine = lines.find(l => l.includes("Status -> Locked"));
+                if (lockLine) {
+                    const m = lockLine.match(/change user info\s+([^\s\t]+)/i);
+                    idLocked = m ? m[1] : "";
+                }
+            }
+
+            const bankMatch = input.match(/bank\s*:\s*([^=>\s,]+)\s*=>\s*([^=>\s,]+)/i);
+            const accMatch = input.match(/acc\s*:\s*([^=>]+)\s*=>\s*([^,]+)/i);
+            const rekMatch = input.match(/rek\s*:\s*(\d+)\s*=>\s*(\d+)/i);
+
+            const bank = bankMatch ? bankMatch[2].toUpperCase() : "DANA";
+            const nama = accMatch ? accMatch[2].trim().toUpperCase() : "-";
+            const rekLama = rekMatch ? rekMatch[1] : "-";
+            const rekBaru = rekMatch ? rekMatch[2] : "-";
+
+            result = `${headerLaporan}\nTanggal : ${tglResult}\nUser id : ${idActive} dan ${idLocked}\n\nKeterangan : Terdaftar 2 user id dengan data yang sama, untuk user id ${idLocked} saya locked di karenakan member memilih menggunakan user id ${idActive} ya ko\n\nSebelumnya : ${bank},${nama},${rekLama}\nRekening Saat ini : ${bank},${nama},${rekBaru}`;
+        }
+        else if (input.includes("Status -> Locked")) {
+            const userId = (input.match(/change user info\s+([^\s\t]+)/i) || ["","-"])[1];
+            const regMatch = input.match(/First Register\s*->\s*([^,\n\r]+)/i) || input.match(/update info\s*:\s*([^,]+)/i);
+            let regInfo = regMatch ? regMatch[1].trim() : "Data Tidak Valid";
+            result = `${headerLaporan}\nTanggal : ${tglResult}\nUser ID : ${userId}\nKeterangan : Locked permanent keterangan ${regInfo} dan manual 2,000 agar tidak menjadi id passive ya ko`;
+        }
+        else if (input.includes("Change Lock/Unlock")) {
+            let userList = [];
+            input.split('\n').forEach(line => { if (line.includes("Change Lock/Unlock")) { const parts = line.split(/\t|\s{2,}/); const u = parts[parts.length-1]?.trim(); if(u && !userList.includes(u)) userList.push(u); }});
+            result = `Info ko, Laporan lock dan unlock\nTanggal : ${tglResult}\n\nList User ID :\n${userList.reverse().join('\n')}`;
+        }
+        else {
+            const userId = (input.match(/change user info\s+([^\s\t,]+)/i) || ["","-"])[1];
+            const bankMatch = input.match(/bank\s*:\s*([^=>\s,]+)\s*=>\s*([^=>\s,]+)/i);
+            const rekMatch = input.match(/rek\s*:\s*(\d+)\s*=>\s*(\d+)/i);
+            const accMatch = input.match(/acc\s*:\s*([^=>]+)\s*=>\s*([^,]+)/i);
+            result = `${headerLaporan}\nTanggal : ${tglResult}\nUser ID : ${userId}\nKeterangan : Pergantian Data Rekening\n\nData sebelum : ${bankMatch?bankMatch[1].toUpperCase():'-'},${accMatch?accMatch[1].trim().toUpperCase():'-'},${rekMatch?rekMatch[1]:'-'}\nData setelah : ${bankMatch?bankMatch[2].toUpperCase():'-'},${accMatch?accMatch[2].trim().toUpperCase():'-'},${rekMatch?rekMatch[2]:'-'}`;
+        }
+
+        document.getElementById('changeDataResultText').innerText = result;
+        document.getElementById('changeDataOutput').style.display = 'block';
+        changeDataShowToast("Laporan Berhasil!");
+    } catch (e) { changeDataShowToast("Gagal memproses log!"); }
+}
+
+function changeDataResetData() {
+    document.getElementById('changeDataSenderName').value = '';
+    document.getElementById('changeDataRawInput').value = '';
+    document.getElementById('changeDataResultText').innerText = '';
+    document.getElementById('changeDataOutput').style.display = 'none';
+    changeDataShowToast("Data Berhasil Direset!");
+}
+
+function changeDataCopyText() {
+    const resultEl = document.getElementById('changeDataResultText');
+    const text = resultEl ? resultEl.innerText : '';
+
+    if (!text) {
+        changeDataShowToast("Belum ada laporan untuk disalin!");
+        return;
+    }
+
+    // Clipboard API dapat diblokir pada sebagian browser/file://.
+    // Gunakan fallback agar tombol SALIN tetap berfungsi tanpa mengganggu dashboard.
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+            .then(() => changeDataShowToast("Laporan Disalin!"))
+            .catch(() => changeDataCopyFallback(text));
+    } else {
+        changeDataCopyFallback(text);
+    }
+}
+
+function changeDataCopyFallback(text) {
+    const temp = document.createElement('textarea');
+    temp.value = text;
+    temp.setAttribute('readonly', '');
+    temp.style.position = 'fixed';
+    temp.style.left = '-9999px';
+    temp.style.top = '0';
+    document.body.appendChild(temp);
+    temp.select();
+
+    try {
+        const ok = document.execCommand('copy');
+        changeDataShowToast(ok ? "Laporan Disalin!" : "Gagal menyalin laporan!");
+    } catch (e) {
+        changeDataShowToast("Gagal menyalin laporan!");
+    } finally {
+        temp.remove();
+    }
+}
+
+/*
+ * PENTING:
+ * Script Change Data memakai IIFE agar variabel internal tidak bentrok
+ * dengan script dashboard lainnya. Karena tombol HTML menggunakan
+ * onclick="", fungsi yang dipanggil harus diekspos ke window.
+ * Ini memperbaiki tombol PROSES/RESET/SALIN tanpa mengubah fungsi lain.
+ */
+window.changeDataProsesData = changeDataProsesData;
+window.changeDataResetData = changeDataResetData;
+window.changeDataCopyText = changeDataCopyText;
+
+})();
+  </script>
+</body>
+</html>
